@@ -12,8 +12,9 @@
 /vendor
 .DS_Store
 .env
-.env.backup
-.env.production
+.env.*
+!.env.example
+!.env.*.example
 .phpactor.json
 .phpunit.result.cache
 Homestead.json
@@ -21,6 +22,15 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 /auth.json
+/docker/secrets/
+/secrets/
+compose.override.yaml
+compose.override.yml
+docker-compose.override.yml
+*.pem
+*.key
+*.p12
+*.pfx
 /.fleet
 /.idea
 /.nova

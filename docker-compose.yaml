@@ -1,0 +1,150 @@
+name: ecommerce-laravel
+
+x-laravel-service: &laravel-service
+    build:
+        context: .
+        dockerfile: Dockerfile
+    image: ecommerce-laravel/app:local
+    init: true
+    restart: unless-stopped
+    env_file:
+        - path: .env
+          required: false
+    environment:
+        DB_CONNECTION: mysql
+        DB_HOST: mysql
+        DB_PORT: 3306
+        MAIL_MAILER: smtp
+        MAIL_HOST: mailhog
+        MAIL_PORT: 1025
+    volumes:
+        - ./:/var/www/html
+        - composer-vendor:/var/www/html/vendor
+        - node-modules:/var/www/html/node_modules
+    networks:
+        - ecommerce
+
+services:
+    deps:
+        <<: *laravel-service
+        restart: 'no'
+        command: docker/install-dependencies.sh
+        healthcheck:
+            disable: true
+
+    app:
+        <<: *laravel-service
+        command: php artisan serve --host=0.0.0.0 --port=8000
+        ports:
+            - '${APP_PORT:-8000}:8000'
+        depends_on:
+            deps:
+                condition: service_completed_successfully
+            mysql:
+                condition: service_healthy
+            mailhog:
+                condition: service_started
+        healthcheck:
+            test:
+                [
+                    'CMD',
+                    'curl',
+                    '--fail',
+                    '--silent',
+                    'http://127.0.0.1:8000/up',
+                ]
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 20s
+
+    queue:
+        <<: *laravel-service
+        command: php artisan queue:work --verbose --tries=3 --timeout=90
+        depends_on:
+            deps:
+                condition: service_completed_successfully
+            mysql:
+                condition: service_healthy
+            mailhog:
+                condition: service_started
+        healthcheck:
+            disable: true
+
+    vite:
+        <<: *laravel-service
+        command: npm run dev -- --host=0.0.0.0 --port=5173
+        ports:
+            - '${VITE_PORT:-5173}:5173'
+        depends_on:
+            app:
+                condition: service_healthy
+        healthcheck:
+            disable: true
+
+    test:
+        <<: *laravel-service
+        profiles: ['tools']
+        restart: 'no'
+        environment:
+            APP_ENV: testing
+            APP_DEBUG: 'false'
+            APP_KEY: 'base64:MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY='
+            CACHE_STORE: array
+            DB_CONNECTION: sqlite
+            DB_DATABASE: ':memory:'
+            MAIL_MAILER: array
+            QUEUE_CONNECTION: sync
+            SESSION_DRIVER: array
+        command: php artisan test --compact
+        depends_on:
+            deps:
+                condition: service_completed_successfully
+        healthcheck:
+            disable: true
+
+    mysql:
+        image: mysql:8.4
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: '${DB_DATABASE:-ecommerce}'
+            MYSQL_USER: '${DB_USERNAME:-ecommerce}'
+            MYSQL_PASSWORD: '${DB_PASSWORD:-local-password}'
+            MYSQL_ROOT_PASSWORD: '${DB_ROOT_PASSWORD:-local-root-password}'
+        command:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        volumes:
+            - mysql-data:/var/lib/mysql
+        networks:
+            - ecommerce
+        healthcheck:
+            test:
+                [
+                    'CMD-SHELL',
+                    'mysqladmin ping -h 127.0.0.1 -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent',
+                ]
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 30s
+
+    mailhog:
+        image: mailhog/mailhog:v1.0.1
+        restart: unless-stopped
+        ports:
+            - '${MAILHOG_SMTP_PORT:-1025}:1025'
+            - '${MAILHOG_HTTP_PORT:-8025}:8025'
+        networks:
+            - ecommerce
+
+networks:
+    ecommerce:
+        driver: bridge
+
+volumes:
+    composer-vendor:
+    node-modules:
+    mysql-data:

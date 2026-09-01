@@ -1,18 +1,5 @@
 <div align="center">
 
-# Laravel Ecommerce
-
-### A modern, full-stack ecommerce starter built with Laravel, Inertia and React.
-
-[![Laravel](https://img.shields.io/badge/Laravel-12.52.0-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
-[![React](https://img.shields.io/badge/React-19.2.8-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.3.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-
-[Features](#-features) · [Screenshots](#-screenshots) · [Installation](#-installation) · [Project structure](#-project-structure)
-
-</div>
-
 ---
 
 ## About the project
@@ -60,7 +47,8 @@ The backend is powered by Laravel 12, while Inertia.js connects it to a type-saf
 | Charts         | Recharts 3.10.1                                   |
 | Authentication | Laravel Fortify 1.34.1                            |
 | Routing        | Laravel Wayfinder 0.1.13                          |
-| Database       | SQLite or MySQL                                   |
+| Database       | SQLite or MySQL 8.4                               |
+| Local services | Docker Compose, MailHog                           |
 | Tooling        | Vite 7, ESLint, Prettier, Laravel Pint            |
 | Testing        | PHPUnit 11                                        |
 
@@ -72,7 +60,7 @@ The backend is powered by Laravel 12, while Inertia.js connects it to a type-saf
   <img alt="Node.js 20 or newer" src="https://img.shields.io/badge/Node.js-%E2%89%A5_20-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white">
   <img alt="npm" src="https://img.shields.io/badge/npm-current-CB3837?style=for-the-badge&logo=npm&logoColor=white">
   <img alt="Vite 7.3.6" src="https://img.shields.io/badge/Vite-v7.3.6-646CFF?style=for-the-badge&logo=vite&logoColor=white">
-  <img alt="Docker optional" src="https://img.shields.io/badge/Docker-optional-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+  <img alt="Docker Compose" src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white">
 </p>
 
 ## 📸 Screenshots
@@ -110,99 +98,143 @@ The backend is powered by Laravel 12, while Inertia.js connects it to a type-saf
 
 ### Prerequisites
 
-- PHP 8.2 or newer with the required Laravel extensions
-- [Composer](https://getcomposer.org)
-- Node.js 20 or newer and npm
-- SQLite (quickest option) or MySQL
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) with Docker Compose
+- Git
 
-### 1. Clone and install
+PHP, Composer, Node.js, MySQL and MailHog are provided by the containers; no local language runtime is required.
+
+### 1. Clone the project
 
 ```bash
 git clone https://github.com/mustafa-oezdemir/ecommerce_laravel.git
 cd ecommerce_laravel
-composer install
-npm install
 ```
 
-### 2. Create the environment file
+### 2. Create the Docker environment
 
 macOS / Linux:
 
 ```bash
-cp .env.example .env
-touch database/database.sqlite
+cp .env.docker.example .env
 ```
 
 Windows PowerShell:
 
 ```powershell
-Copy-Item .env.example .env
-New-Item database/database.sqlite -ItemType File
+Copy-Item .env.docker.example .env
 ```
 
-Then generate the application key:
+Replace the example database passwords in `.env`, then build the application image and generate a unique Laravel key:
 
 ```bash
-php artisan key:generate
+docker compose build app
+docker compose run --rm --no-deps app php artisan key:generate --force
 ```
 
-The example environment uses SQLite by default. To use MySQL, update `DB_CONNECTION` and the other `DB_*` values in `.env`.
+### 3. Start MySQL and prepare the database
 
-### 3. Configure an administrator
+```bash
+docker compose up -d mysql mailhog
+docker compose run --rm app php artisan migrate --seed
+```
 
-Add one or more comma-separated addresses to `.env` before seeding:
+The seeder creates an administrator only when `ADMIN_EMAILS` contains its address:
 
 ```env
 ADMIN_EMAILS=admin@example.com
 ```
 
-### 4. Prepare the database
-
-```bash
-php artisan migrate --seed
-php artisan storage:link
-```
-
-Seeded administrator credentials:
+Default local credentials:
 
 ```text
 Email:    admin@example.com
 Password: password
 ```
 
-> The administrator is only created when its address is present in `ADMIN_EMAILS`. Change the default password immediately outside local development.
+> Change the seeded password immediately outside local development.
 
-### 5. Start developing
+### 4. Start the complete stack
 
 ```bash
+docker compose up -d
+```
+
+| Service                 | URL / port            |
+| ----------------------- | --------------------- |
+| Laravel storefront      | http://localhost:8000 |
+| Vite development server | http://localhost:5173 |
+| MailHog inbox           | http://localhost:8025 |
+| MySQL                   | `127.0.0.1:3306`      |
+
+Follow logs or run Artisan commands without installing PHP locally:
+
+```bash
+docker compose logs -f app queue vite
+docker compose run --rm test
+docker compose exec app php artisan migrate
+docker compose exec app php artisan tinker
+```
+
+Stop the stack while preserving MySQL data:
+
+```bash
+docker compose down
+```
+
+To also delete the local MySQL volume and start with an empty database, use `docker compose down --volumes`.
+
+<details>
+<summary><strong>Run without Docker</strong></summary>
+<br>
+
+Install PHP 8.2+, Composer, Node.js 20+ and SQLite or MySQL. Then run:
+
+```bash
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
 composer run dev
 ```
 
-Open **http://localhost:8000**. The development command starts the Laravel server, queue listener, log viewer and Vite development server together.
+</details>
 
 ## ✉️ Local email testing
 
-The default `log` mailer writes messages to the application log. For a visual inbox, start [MailHog](https://github.com/mailhog/MailHog):
+MailHog is included in the Compose stack. Laravel sends local mail to `mailhog:1025`, and the browser inbox is available at **http://localhost:8025**. No SMTP credentials are required locally.
 
 ```bash
-docker run --rm -p 1025:1025 -p 8025:8025 mailhog/mailhog
+docker compose logs -f mailhog
 ```
 
-Update `.env`:
+## 🔐 Environment and GitHub secrets
 
-```env
-MAIL_MAILER=smtp
-MAIL_HOST=127.0.0.1
-MAIL_PORT=1025
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-```
+`.env.docker.example` is safe to commit and documents every Docker setting. The real `.env`, production variants, private keys, certificates and Docker secret files are ignored by Git.
 
-Apply the change and open the inbox at **http://localhost:8025**:
+Use GitHub **Secrets** for sensitive values:
 
-```bash
-php artisan config:clear
-```
+| Secret                  | Purpose                                                                            |
+| ----------------------- | ---------------------------------------------------------------------------------- |
+| `APP_KEY`               | Production Laravel encryption key generated with `php artisan key:generate --show` |
+| `CI_DB_PASSWORD`        | MySQL user password used by the Laravel workflow                                   |
+| `CI_DB_ROOT_PASSWORD`   | MySQL root password used by the Laravel workflow                                   |
+| `DB_PASSWORD`           | Production database password                                                       |
+| `MAIL_PASSWORD`         | Production SMTP password; MailHog does not need one                                |
+| `AWS_ACCESS_KEY_ID`     | Optional object-storage access key                                                 |
+| `AWS_SECRET_ACCESS_KEY` | Optional object-storage secret key                                                 |
+
+Use GitHub **Variables** for non-sensitive configuration:
+
+| Variable         | Example                    |
+| ---------------- | -------------------------- |
+| `CI_DB_DATABASE` | `ecommerce_test`           |
+| `CI_DB_USERNAME` | `laravel`                  |
+| `APP_URL`        | `https://shop.example.com` |
+| `ADMIN_EMAILS`   | `admin@example.com`        |
+
+The CI workflow has safe ephemeral fallbacks, so pull requests from forks continue to run. Production values should never reuse the local placeholders from `.env.docker.example`.
 
 ## 🗺️ Application routes
 
