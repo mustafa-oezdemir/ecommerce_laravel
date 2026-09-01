@@ -20,7 +20,7 @@ Route::get('shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('shop/{product}', [ShopController::class, 'show'])->name('shop.show');
 
 Route::get('dashboard', DashboardController::class)
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'can:access-admin'])
     ->name('dashboard');
 
 Route::resource('products', ProductController::class)->middleware(['auth', 'verified']);

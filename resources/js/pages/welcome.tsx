@@ -17,6 +17,9 @@ type PageProps = {
         user?: {
             name?: string;
         } | null;
+        can?: {
+            access_admin?: boolean;
+        };
     };
 };
 
@@ -61,6 +64,7 @@ export default function Welcome({
 }) {
     const { auth } = usePage<PageProps>().props;
     const isAuthenticated = auth?.user !== null && auth?.user !== undefined;
+    const canAccessAdmin = auth?.can?.access_admin === true;
 
     return (
         <MarketingLayout title="Welcome" canRegister={canRegister}>
@@ -96,13 +100,13 @@ export default function Welcome({
                                 </Link>
                             </Button>
 
-                            {isAuthenticated ? (
+                            {isAuthenticated && canAccessAdmin ? (
                                 <Button asChild variant="outline" size="lg">
                                     <Link href={dashboard()}>
                                         Go to dashboard
                                     </Link>
                                 </Button>
-                            ) : (
+                            ) : !isAuthenticated ? (
                                 <>
                                     <Button asChild variant="outline" size="lg">
                                         <Link href={login()}>Log in</Link>
@@ -120,7 +124,7 @@ export default function Welcome({
                                         </Button>
                                     )}
                                 </>
-                            )}
+                            ) : null}
                         </div>
                     </div>
                 </div>

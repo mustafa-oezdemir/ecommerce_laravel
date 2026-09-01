@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import ChartBuilder from '@/components/admin/charts/chart-builder';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
@@ -133,14 +133,6 @@ export default function AdminDashboardIndex({
                         This preview uses a sample subtotal of $100.00.
                     </p>
                 </section>
-
-                <div className="text-xs text-muted-foreground">
-                    Non-admin users continue to see the standard dashboard at{' '}
-                    <Link href={dashboard()} className="underline">
-                        /dashboard
-                    </Link>
-                    .
-                </div>
             </div>
         </AppLayout>
     );

@@ -70,16 +70,13 @@ class EcommerceRoutesTest extends TestCase
             ->assertOk();
     }
 
-    public function test_dashboard_inertia_props_include_false_admin_access_for_non_admin_user(): void
+    public function test_non_admin_user_cannot_access_dashboard(): void
     {
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->get(route('dashboard'))
-            ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page
-                ->where('auth.can.access_admin', false)
-            );
+            ->assertForbidden();
     }
 
     public function test_dashboard_inertia_props_include_true_admin_access_for_admin_user(): void

@@ -18,30 +18,25 @@ class DashboardController extends Controller
         TierPricingService $tierPricingService,
     ): Response {
         $user = $request->user();
+        $range = (string) $request->query('range', '90d');
+        $granularity = (string) $request->query('granularity', 'month');
+        $metrics = $metricsService->build(
+            range: $range,
+            granularity: $granularity,
+            now: CarbonImmutable::now(),
+        );
 
-        if ($user?->can('access-admin')) {
-            $range = (string) $request->query('range', '90d');
-            $granularity = (string) $request->query('granularity', 'month');
-            $metrics = $metricsService->build(
-                range: $range,
-                granularity: $granularity,
-                now: CarbonImmutable::now(),
-            );
+        $pricingPreview = $tierPricingService->evaluate(
+            PricingContext::fromUser(
+                user: $user,
+                cartSnapshot: [],
+                subtotalCents: 10000,
+            ),
+        );
 
-            $pricingPreview = $tierPricingService->evaluate(
-                PricingContext::fromUser(
-                    user: $user,
-                    cartSnapshot: [],
-                    subtotalCents: 10000,
-                ),
-            );
-
-            return Inertia::render('admin/dashboard/index', [
-                'metrics' => $metrics,
-                'pricing_preview' => $pricingPreview,
-            ]);
-        }
-
-        return Inertia::render('dashboard');
+        return Inertia::render('admin/dashboard/index', [
+            'metrics' => $metrics,
+            'pricing_preview' => $pricingPreview,
+        ]);
     }
 }

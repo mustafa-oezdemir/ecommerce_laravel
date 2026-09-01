@@ -40,9 +40,14 @@ export default function MarketingNav({ canRegister = true }: Props) {
 
                     {auth.user ? (
                         <>
-                            <Link href={dashboard()} className={outlineLink}>
-                                Dashboard
-                            </Link>
+                            {auth.can.access_admin && (
+                                <Link
+                                    href={dashboard()}
+                                    className={outlineLink}
+                                >
+                                    Dashboard
+                                </Link>
+                            )}
 
                             <Link
                                 href={logout()}

@@ -20,16 +20,13 @@ class DashboardTest extends TestCase
         $response->assertRedirect(route('login'));
     }
 
-    public function test_authenticated_non_admin_users_see_the_standard_dashboard_page(): void
+    public function test_authenticated_non_admin_users_cannot_access_dashboard(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
 
         $this->get(route('dashboard'))
-            ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page
-                ->component('dashboard')
-            );
+            ->assertForbidden();
     }
 
     public function test_authenticated_admin_users_see_admin_dashboard_with_sales_metrics(): void

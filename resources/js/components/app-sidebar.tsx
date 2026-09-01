@@ -93,7 +93,9 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain label="Platform" items={platformNavItems} />
+                {canAccessAdmin && (
+                    <NavMain label="Platform" items={platformNavItems} />
+                )}
                 <NavMain label="Account" items={accountNavItems} />
                 {canAccessAdmin && (
                     <NavMain label="Admin" items={adminNavItems} />
