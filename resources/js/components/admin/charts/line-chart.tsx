@@ -72,8 +72,10 @@ export default function LineChart({
                             labelFormatter={(value: React.ReactNode) =>
                                 formatChartDateLabel(String(value ?? ''))
                             }
-                            formatter={(value: string | number | undefined) => [
-                                new Intl.NumberFormat('en-US').format(Number(value ?? 0)),
+                            formatter={(value) => [
+                                new Intl.NumberFormat('en-US').format(
+                                    Number(value ?? 0),
+                                ),
                                 legendLabel,
                             ]}
                         />

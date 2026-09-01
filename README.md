@@ -1,227 +1,267 @@
-# Ecommerce Starter (Laravel + Inertia)
+<div align="center">
 
-This project is an ecommerce starter built with Laravel 12 and Inertia React.  
-It includes storefront flows, cart/checkout, customer account pages, and an admin panel in a single codebase.
+# Laravel Ecommerce
 
-## Features
+### A modern, full-stack ecommerce starter built with Laravel, Inertia and React.
 
-- Product listing and product detail pages with category/brand/model/price filters
-- Cart and stock-aware checkout flow
-- Customer area:
-  - Order history
-  - Address management
-  - Payment method management
-- Admin area:
-  - Category CRUD
-  - Product CRUD
-  - Order listing/detail/status updates
-  - Product image trash management (restore / force delete)
-  - Analytics endpoints and dashboard metrics
-- Authentication via Fortify:
-  - Register / Login / Logout
-  - Password reset
-  - Email verification
-  - Two-factor authentication (2FA)
-- Customer tier model (bronze/silver/gold/platinum) with pricing service support
+[![Laravel](https://img.shields.io/badge/Laravel-12.52.0-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![React](https://img.shields.io/badge/React-19.2.8-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.3.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
-## Stack
+[Features](#-features) · [Screenshots](#-screenshots) · [Installation](#-installation) · [Project structure](#-project-structure)
 
-- PHP 8.4
-- Laravel 12
-- Inertia.js v2 (`@inertiajs/react`)
-- React 19 + TypeScript
-- Tailwind CSS 4
-- Laravel Fortify
-- Laravel Wayfinder
-- PHPUnit 11
+</div>
 
-## Requirements
+---
 
-- PHP 8.2+
-- Composer
-- Node.js 20+ and npm
-- Database:
-  - `sqlite` for quick local setup
-  - or `mysql`
+## About the project
 
-## Quick Start
+Laravel Ecommerce combines a customer-facing storefront, account management and a complete administration experience in one codebase. It includes a stock-aware checkout, tier-based pricing, product management, order workflows and interactive analytics.
 
-### 1) Install dependencies
+The backend is powered by Laravel 12, while Inertia.js connects it to a type-safe React 19 interface—without the overhead of maintaining a separate API application.
+
+## ✨ Features
+
+### Storefront
+
+- Responsive landing page and product catalogue
+- Category, brand, model and price filters
+- Detailed product pages with image galleries and variants
+- Persistent shopping cart
+- Stock-aware checkout and order confirmation emails
+- Customer-specific bronze, silver, gold and platinum pricing
+
+### Customer account
+
+- Secure registration, sign-in and password recovery
+- Email verification and two-factor authentication
+- Order history
+- Address book with default-address support
+- Payment method management
+- Profile, password and appearance settings
+
+### Administration
+
+- Analytics dashboard with KPIs, category breakdowns and time-series charts
+- Category and product CRUD workflows
+- Product image uploads, soft deletion, restoration and permanent deletion
+- Order overview, order details and status management
+- Email notifications for placed, shipped and cancelled orders
+- Gate- and policy-based authorization
+
+## 🧰 Tech stack
+
+| Layer          | Technology                                        |
+| -------------- | ------------------------------------------------- |
+| Backend        | PHP 8.2+, Laravel 12.52.0                         |
+| Frontend       | React 19.2.8, TypeScript 5.9.3, Inertia.js 2.3.27 |
+| Styling        | Tailwind CSS 4.3.3, Radix UI, Headless UI         |
+| Charts         | Recharts 3.10.1                                   |
+| Authentication | Laravel Fortify 1.34.1                            |
+| Routing        | Laravel Wayfinder 0.1.13                          |
+| Database       | SQLite or MySQL                                   |
+| Tooling        | Vite 7, ESLint, Prettier, Laravel Pint            |
+| Testing        | PHPUnit 11                                        |
+
+### Build & development
+
+<p align="center">
+  <img alt="PHP 8.2 or newer" src="https://img.shields.io/badge/PHP-%E2%89%A5_8.2-777BB4?style=for-the-badge&logo=php&logoColor=white">
+  <img alt="Composer 2" src="https://img.shields.io/badge/Composer-v2-168AFE?style=for-the-badge&logo=composer&logoColor=white">
+  <img alt="Node.js 20 or newer" src="https://img.shields.io/badge/Node.js-%E2%89%A5_20-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white">
+  <img alt="npm" src="https://img.shields.io/badge/npm-current-CB3837?style=for-the-badge&logo=npm&logoColor=white">
+  <img alt="Vite 7.3.6" src="https://img.shields.io/badge/Vite-v7.3.6-646CFF?style=for-the-badge&logo=vite&logoColor=white">
+  <img alt="Docker optional" src="https://img.shields.io/badge/Docker-optional-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+</p>
+
+## 📸 Screenshots
+
+<table>
+  <tr>
+    <td width="50%"><img src="public/screenshots/cart/home.png" alt="Storefront home page"></td>
+    <td width="50%"><img src="public/screenshots/cart/shop.png" alt="Product catalogue"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Storefront</strong></td>
+    <td align="center"><strong>Product catalogue</strong></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="public/screenshots/cart/area1.png" alt="Shopping cart"></td>
+    <td width="50%"><img src="public/screenshots/cart/dashboard.png" alt="Admin analytics dashboard"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Shopping cart</strong></td>
+    <td align="center"><strong>Analytics dashboard</strong></td>
+  </tr>
+</table>
+
+<details>
+<summary><strong>View email previews</strong></summary>
+<br>
+
+| Order placed                                                | Order shipped                                                 | Order cancelled                                                   |
+| ----------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------- |
+| ![Order confirmation](public/screenshots/cart/mailhog2.png) | ![Shipping notification](public/screenshots/cart/shipped.png) | ![Cancellation notification](public/screenshots/cart/mailhog.png) |
+
+</details>
+
+## 🚀 Installation
+
+### Prerequisites
+
+- PHP 8.2 or newer with the required Laravel extensions
+- [Composer](https://getcomposer.org)
+- Node.js 20 or newer and npm
+- SQLite (quickest option) or MySQL
+
+### 1. Clone and install
 
 ```bash
+git clone https://github.com/mustafa-oezdemir/ecommerce_laravel.git
+cd ecommerce_laravel
 composer install
 npm install
 ```
 
-### 2) Prepare environment
+### 2. Create the environment file
+
+macOS / Linux:
 
 ```bash
 cp .env.example .env
-php artisan key:generate
-```
-
-### 3) Configure database
-
-For SQLite:
-
-```bash
 touch database/database.sqlite
 ```
 
-In `.env`:
+Windows PowerShell:
 
-```env
-DB_CONNECTION=sqlite
+```powershell
+Copy-Item .env.example .env
+New-Item database/database.sqlite -ItemType File
 ```
 
-If you use MySQL, configure `DB_*` values for your environment.
+Then generate the application key:
 
-### 4) Set admin email(s) (optional but recommended)
+```bash
+php artisan key:generate
+```
 
-In `.env`:
+The example environment uses SQLite by default. To use MySQL, update `DB_CONNECTION` and the other `DB_*` values in `.env`.
+
+### 3. Configure an administrator
+
+Add one or more comma-separated addresses to `.env` before seeding:
 
 ```env
 ADMIN_EMAILS=admin@example.com
 ```
 
-The seeder creates an admin user for this email:
-
-- Email: `admin@example.com`
-- Password: `password`
-
-### 5) Run migrations and seeders
+### 4. Prepare the database
 
 ```bash
-php artisan migrate:fresh --seed
+php artisan migrate --seed
+php artisan storage:link
 ```
 
-### 6) Start the app
+Seeded administrator credentials:
 
-Single command (recommended):
+```text
+Email:    admin@example.com
+Password: password
+```
+
+> The administrator is only created when its address is present in `ADMIN_EMAILS`. Change the default password immediately outside local development.
+
+### 5. Start developing
 
 ```bash
 composer run dev
 ```
 
-This runs the following concurrently:
+Open **http://localhost:8000**. The development command starts the Laravel server, queue listener, log viewer and Vite development server together.
 
-- `php artisan serve`
-- `php artisan queue:listen`
-- `php artisan pail`
-- `npm run dev`
+## ✉️ Local email testing
 
-Default app URL: `http://localhost:8000`
-
-### 7) Use MailHog for local order emails (recommended)
-
-Run MailHog (Docker):
+The default `log` mailer writes messages to the application log. For a visual inbox, start [MailHog](https://github.com/mailhog/MailHog):
 
 ```bash
 docker run --rm -p 1025:1025 -p 8025:8025 mailhog/mailhog
 ```
 
-Set mail config in `.env`:
+Update `.env`:
 
 ```env
 MAIL_MAILER=smtp
 MAIL_HOST=127.0.0.1
 MAIL_PORT=1025
-MAIL_USERNAME=
-MAIL_PASSWORD=
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
 ```
 
-Then clear cached config (if needed):
+Apply the change and open the inbox at **http://localhost:8025**:
 
 ```bash
 php artisan config:clear
 ```
 
-MailHog UI: `http://localhost:8025`
+## 🗺️ Application routes
 
-Note: In the current implementation, order emails are sent when an admin updates an order status to `shipped` or `cancelled`.
+| Area           | Routes                                                                                    | Access                 |
+| -------------- | ----------------------------------------------------------------------------------------- | ---------------------- |
+| Store          | `/`, `/shop`, `/shop/{product}`, `/cart`                                                  | Public                 |
+| Dashboard      | `/dashboard`                                                                              | Verified customer      |
+| Account        | `/account/orders`, `/account/addresses`, `/account/payment-methods`                       | Verified customer      |
+| Administration | `/admin/overview`, `/admin/categories`, `/admin/products`, `/admin/orders`                | Administrator          |
+| Settings       | `/settings/profile`, `/settings/password`, `/settings/appearance`, `/settings/two-factor` | Authenticated customer |
 
-## Useful Commands
+## 🗂️ Project structure
+
+```text
+app/
+├── Http/Controllers/       HTTP and Inertia controllers
+├── Http/Requests/          Validation and authorization
+├── Models/                 Eloquent domain models
+├── Policies/               Resource authorization
+└── Services/               Pricing, analytics and storage logic
+database/
+├── factories/              Test-data factories
+├── migrations/             Database schema
+└── seeders/                Demo catalogue and accounts
+resources/js/
+├── components/             Shared React and UI components
+├── hooks/                  Reusable client-side behavior
+├── layouts/                Application and marketing shells
+└── pages/                  Inertia pages
+routes/                     Store, account, admin and settings routes
+tests/Feature/              Application-level test suite
+```
+
+## 🧪 Quality checks
 
 ```bash
-# Backend + frontend production build
-npm run build
+# Run the PHP test suite
+php artisan test
 
-# Frontend lint / type checks
+# Check PHP formatting
+composer run test:lint
+
+# Lint and type-check the frontend
 npm run lint
 npm run types
 
-# PHP format/lint
-composer run lint
+# Verify formatting without changing files
+npm run format:check
 
-# Tests
-php artisan test --compact
-php artisan test --compact tests/Feature/ShopBrowsingTest.php
+# Create a production build
+npm run build
 ```
 
-## Main Modules and Routes
+## 📄 License
 
-- Public:
-  - `/` (welcome)
-  - `/shop`
-  - `/shop/{product}`
-  - `/cart`
-- Authenticated:
-  - `/dashboard`
-  - `/account/orders`
-  - `/account/addresses`
-  - `/account/payment-methods`
-- Admin (`can:access-admin`):
-  - `/admin/overview`
-  - `/admin/categories`
-  - `/admin/products`
-  - `/admin/orders`
-  - `/admin/product-images/trashed`
+This project is open-source software distributed under the MIT license.
 
-## Project Structure (Short)
+---
 
-- `app/Http/Controllers`: application controllers
-- `app/Http/Requests`: Form Request validation classes
-- `app/Services`: business logic, dashboard and pricing services
-- `resources/js/pages`: Inertia pages
-- `resources/js/components`: UI and shared components
-- `resources/js/routes`: Wayfinder route functions
-- `database/seeders`: starter/demo data
-- `tests/Feature`: feature/integration tests
-
-## Notes
-
-- If frontend changes do not appear, run `npm run dev` or `npm run build`.
-- Before deployment, run linting, type checks, and tests.
-## Screenshots
-
-![Dashboard Analytics](./public/screenshots/cart/area.png)
-
-![Cart Area Updated](./public/screenshots/cart/area1.png)
-
-## Home and Shop Pages
-
-![Admin Product List](./public/screenshots/cart/home.png)
-
-![Admin Product List](./public/screenshots/cart/shop.png)
-
-## Dashboard Analytics
-
-![Admin Product List](./public/screenshots/cart/dashboard.png)
-
-## MailHog UI
-
-### Order confirmation email in MailHog UI
-![MailHog UI](./public/screenshots/cart/mailhog2.png)
-
-### Order canceled in MailHog UI
-
-![MailHog UI](./public/screenshots/cart/mailhog.png)
-
-### Shipped order email in MailHog UI
-
-![MailHog UI](./public/screenshots/cart/shipped.png)
-
-
-
-
-
+<div align="center">
+Built with Laravel, React and a fondness for well-designed commerce experiences.
+</div>

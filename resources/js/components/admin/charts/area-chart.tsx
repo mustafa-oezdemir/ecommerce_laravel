@@ -77,7 +77,10 @@ export default function AreaChart({
     }
 
     const actions = onRangeChange ? (
-        <Select value={rangeValue} onValueChange={(value) => onRangeChange(value as BuilderRange)}>
+        <Select
+            value={rangeValue}
+            onValueChange={(value) => onRangeChange(value as BuilderRange)}
+        >
             <SelectTrigger
                 className="hidden w-[170px] rounded-lg sm:ml-auto sm:flex"
                 aria-label="Select a range"
@@ -119,8 +122,18 @@ export default function AreaChart({
                         margin={{ top: 6, right: 10, left: 4, bottom: 0 }}
                     >
                         <defs>
-                            <linearGradient id={fillGradientId} x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.8} />
+                            <linearGradient
+                                id={fillGradientId}
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                            >
+                                <stop
+                                    offset="5%"
+                                    stopColor="var(--chart-1)"
+                                    stopOpacity={0.8}
+                                />
                                 <stop
                                     offset="95%"
                                     stopColor="var(--chart-1)"
@@ -147,8 +160,10 @@ export default function AreaChart({
                             labelFormatter={(value: React.ReactNode) =>
                                 formatChartDateLabel(String(value ?? ''))
                             }
-                            formatter={(value: string | number | undefined) => [
-                                new Intl.NumberFormat('en-US').format(Number(value ?? 0)),
+                            formatter={(value) => [
+                                new Intl.NumberFormat('en-US').format(
+                                    Number(value ?? 0),
+                                ),
                                 legendLabel,
                             ]}
                         />

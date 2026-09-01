@@ -375,8 +375,10 @@ export default function Dashboard({ stats, filters, categories }: Props) {
                                             width={60}
                                         />
                                         <Tooltip
-                                            formatter={(value: number) => [
-                                                formatCurrency(value),
+                                            formatter={(value) => [
+                                                formatCurrency(
+                                                    Number(value ?? 0),
+                                                ),
                                                 'Revenue',
                                             ]}
                                             contentStyle={{ fontSize: 13 }}
@@ -439,12 +441,11 @@ export default function Dashboard({ stats, filters, categories }: Props) {
                                                 width={60}
                                             />
                                             <Tooltip
-                                                formatter={(
-                                                    value: number,
-                                                    name: string,
-                                                ) => [
-                                                    formatCurrency(value),
-                                                    name,
+                                                formatter={(value, name) => [
+                                                    formatCurrency(
+                                                        Number(value ?? 0),
+                                                    ),
+                                                    String(name ?? ''),
                                                 ]}
                                                 contentStyle={{ fontSize: 13 }}
                                             />
