@@ -1,5 +1,13 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { CircleCheck, CircleHelp, CircleMinus, CreditCard, ShoppingBag, User, X } from 'lucide-react';
+import {
+    CircleCheck,
+    CircleHelp,
+    CircleMinus,
+    CreditCard,
+    ShoppingBag,
+    User,
+    X,
+} from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -78,7 +86,7 @@ export default function CartIndex() {
 
     const defaultFullName = defaultAddress
         ? `${defaultAddress.first_name} ${defaultAddress.last_name}`
-        : auth?.user?.name ?? '';
+        : (auth?.user?.name ?? '');
 
     const [useSavedPaymentMethod, setUseSavedPaymentMethod] = useState(
         defaultPaymentMethod !== null,
@@ -94,7 +102,8 @@ export default function CartIndex() {
         country: defaultAddress?.country ?? '',
         accepted: true,
         payment_method_id: defaultPaymentMethod?.id ?? null,
-        card_holder_name: defaultPaymentMethod?.card_holder_name ?? defaultFullName,
+        card_holder_name:
+            defaultPaymentMethod?.card_holder_name ?? defaultFullName,
         card_number:
             defaultPaymentMethod !== null
                 ? `**** **** **** ${defaultPaymentMethod.last_four}`
@@ -112,7 +121,9 @@ export default function CartIndex() {
     });
 
     const selectedItems = useMemo(() => {
-        return items.filter((item) => !deselectedLineIds.includes(item.line_id));
+        return items.filter(
+            (item) => !deselectedLineIds.includes(item.line_id),
+        );
     }, [items, deselectedLineIds]);
 
     const subtotal = useMemo(() => {
@@ -183,7 +194,9 @@ export default function CartIndex() {
                 card_holder_name: defaultPaymentMethod.card_holder_name,
                 card_number: `**** **** **** ${defaultPaymentMethod.last_four}`,
                 cvc: '',
-                expiry_month: String(defaultPaymentMethod.expiry_month).padStart(2, '0'),
+                expiry_month: String(
+                    defaultPaymentMethod.expiry_month,
+                ).padStart(2, '0'),
                 expiry_year: String(defaultPaymentMethod.expiry_year),
             });
         } else {
@@ -212,7 +225,9 @@ export default function CartIndex() {
 
         form.transform((data) => ({
             ...data,
-            payment_method_id: useSavedPaymentMethod ? data.payment_method_id : null,
+            payment_method_id: useSavedPaymentMethod
+                ? data.payment_method_id
+                : null,
             card_number: useSavedPaymentMethod ? '' : data.card_number,
             cvc: useSavedPaymentMethod ? '' : data.cvc,
             items: selectedItems.map((item) => ({
@@ -249,7 +264,10 @@ export default function CartIndex() {
                         {items.length === 0 ? (
                             <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">
                                 Your cart is empty.{' '}
-                                <Link href={shopIndex()} className="font-medium underline">
+                                <Link
+                                    href={shopIndex()}
+                                    className="font-medium underline"
+                                >
                                     Go to shop
                                 </Link>
                                 .
@@ -264,8 +282,14 @@ export default function CartIndex() {
                                         <div className="flex gap-4">
                                             <div className="pt-1">
                                                 <Checkbox
-                                                    checked={!deselectedLineIds.includes(item.line_id)}
-                                                    onCheckedChange={(checked) =>
+                                                    checked={
+                                                        !deselectedLineIds.includes(
+                                                            item.line_id,
+                                                        )
+                                                    }
+                                                    onCheckedChange={(
+                                                        checked,
+                                                    ) =>
                                                         setItemSelected(
                                                             item.line_id,
                                                             checked === true,
@@ -297,24 +321,46 @@ export default function CartIndex() {
                                                     {item.slug}
                                                 </p>
                                                 <div className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
-                                                    {item.selected_options?.brand ? (
+                                                    {item.selected_options
+                                                        ?.brand ? (
                                                         <span className="inline-flex rounded-full border px-2 py-0.5">
-                                                            {item.selected_options.brand}
+                                                            {
+                                                                item
+                                                                    .selected_options
+                                                                    .brand
+                                                            }
                                                         </span>
                                                     ) : null}
-                                                    {item.selected_options?.model ? (
+                                                    {item.selected_options
+                                                        ?.model ? (
                                                         <span className="inline-flex rounded-full border px-2 py-0.5">
-                                                            {item.selected_options.model}
+                                                            {
+                                                                item
+                                                                    .selected_options
+                                                                    .model
+                                                            }
                                                         </span>
                                                     ) : null}
-                                                    {item.selected_options?.clothing_size ? (
+                                                    {item.selected_options
+                                                        ?.clothing_size ? (
                                                         <span className="inline-flex rounded-full border px-2 py-0.5">
-                                                            Size {item.selected_options.clothing_size}
+                                                            Size{' '}
+                                                            {
+                                                                item
+                                                                    .selected_options
+                                                                    .clothing_size
+                                                            }
                                                         </span>
                                                     ) : null}
-                                                    {item.selected_options?.shoe_size ? (
+                                                    {item.selected_options
+                                                        ?.shoe_size ? (
                                                         <span className="inline-flex rounded-full border px-2 py-0.5">
-                                                            EU {item.selected_options.shoe_size}
+                                                            EU{' '}
+                                                            {
+                                                                item
+                                                                    .selected_options
+                                                                    .shoe_size
+                                                            }
                                                         </span>
                                                     ) : null}
                                                 </div>
@@ -348,7 +394,9 @@ export default function CartIndex() {
                                                 onChange={(event) =>
                                                     updateItemQuantity(
                                                         item.line_id,
-                                                        Number(event.target.value),
+                                                        Number(
+                                                            event.target.value,
+                                                        ),
                                                     )
                                                 }
                                                 className="h-9 min-w-14 rounded-md border bg-background px-2 text-sm"
@@ -367,7 +415,9 @@ export default function CartIndex() {
 
                                             <button
                                                 type="button"
-                                                onClick={() => removeItem(item.line_id)}
+                                                onClick={() =>
+                                                    removeItem(item.line_id)
+                                                }
                                                 className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted"
                                                 aria-label={`Remove ${item.name}`}
                                             >
@@ -381,7 +431,9 @@ export default function CartIndex() {
                     </section>
 
                     <aside className="h-fit rounded-xl border border-border bg-muted/30 p-6 shadow-sm">
-                        <h2 className="text-2xl font-semibold">Order summary</h2>
+                        <h2 className="text-2xl font-semibold">
+                            Order summary
+                        </h2>
 
                         <div className="mt-6 space-y-4 text-sm">
                             <div className="flex items-center justify-between">
@@ -462,7 +514,10 @@ export default function CartIndex() {
                                     type="email"
                                     value={form.data.email}
                                     onChange={(event) =>
-                                        form.setData('email', event.target.value)
+                                        form.setData(
+                                            'email',
+                                            event.target.value,
+                                        )
                                     }
                                 />
                                 {form.errors.email && (
@@ -478,7 +533,10 @@ export default function CartIndex() {
                                     id="phone"
                                     value={form.data.phone}
                                     onChange={(event) =>
-                                        form.setData('phone', event.target.value)
+                                        form.setData(
+                                            'phone',
+                                            event.target.value,
+                                        )
                                     }
                                 />
                                 {form.errors.phone && (
@@ -491,9 +549,12 @@ export default function CartIndex() {
 
                         <div className="mt-4 space-y-4 rounded-lg border bg-background p-4">
                             <div className="space-y-1">
-                                <p className="text-sm font-semibold">2. Address</p>
+                                <p className="text-sm font-semibold">
+                                    2. Address
+                                </p>
                                 <p className="text-xs text-muted-foreground">
-                                    Default address is auto-filled when available.
+                                    Default address is auto-filled when
+                                    available.
                                 </p>
                             </div>
 
@@ -523,7 +584,10 @@ export default function CartIndex() {
                                         id="city"
                                         value={form.data.city}
                                         onChange={(event) =>
-                                            form.setData('city', event.target.value)
+                                            form.setData(
+                                                'city',
+                                                event.target.value,
+                                            )
                                         }
                                     />
                                     {form.errors.city && (
@@ -533,9 +597,7 @@ export default function CartIndex() {
                                     )}
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="postal_code">
-                                        Postal
-                                    </Label>
+                                    <Label htmlFor="postal_code">Postal</Label>
                                     <Input
                                         id="postal_code"
                                         value={form.data.postal_code}
@@ -560,7 +622,10 @@ export default function CartIndex() {
                                     id="country"
                                     value={form.data.country}
                                     onChange={(event) =>
-                                        form.setData('country', event.target.value)
+                                        form.setData(
+                                            'country',
+                                            event.target.value,
+                                        )
                                     }
                                 />
                                 {form.errors.country && (
@@ -578,7 +643,8 @@ export default function CartIndex() {
                                     3. Payment information
                                 </p>
                                 <p className="text-xs text-muted-foreground">
-                                    Default payment method is auto-selected when available.
+                                    Default payment method is auto-selected when
+                                    available.
                                 </p>
                             </div>
 
@@ -593,14 +659,17 @@ export default function CartIndex() {
                                         }
                                     />
                                     <span className="text-xs">
-                                        Use saved card: {defaultPaymentMethod.brand}{' '}
-                                        **** {defaultPaymentMethod.last_four}
+                                        Use saved card:{' '}
+                                        {defaultPaymentMethod.brand} ****{' '}
+                                        {defaultPaymentMethod.last_four}
                                     </span>
                                 </label>
                             )}
 
                             <div className="space-y-2">
-                                <Label htmlFor="card_holder_name">Card holder name</Label>
+                                <Label htmlFor="card_holder_name">
+                                    Card holder name
+                                </Label>
                                 <Input
                                     id="card_holder_name"
                                     value={form.data.card_holder_name}
@@ -627,7 +696,9 @@ export default function CartIndex() {
                                     onChange={(event) =>
                                         form.setData(
                                             'card_number',
-                                            formatCardNumber(event.target.value),
+                                            formatCardNumber(
+                                                event.target.value,
+                                            ),
                                         )
                                     }
                                     disabled={useSavedPaymentMethod}
@@ -648,7 +719,10 @@ export default function CartIndex() {
                                         onChange={(event) =>
                                             form.setData(
                                                 'cvc',
-                                                onlyDigits(event.target.value, 4),
+                                                onlyDigits(
+                                                    event.target.value,
+                                                    4,
+                                                ),
                                             )
                                         }
                                         disabled={useSavedPaymentMethod}
@@ -667,7 +741,10 @@ export default function CartIndex() {
                                         onChange={(event) =>
                                             form.setData(
                                                 'expiry_month',
-                                                onlyDigits(event.target.value, 2),
+                                                onlyDigits(
+                                                    event.target.value,
+                                                    2,
+                                                ),
                                             )
                                         }
                                         disabled={useSavedPaymentMethod}
@@ -686,7 +763,10 @@ export default function CartIndex() {
                                         onChange={(event) =>
                                             form.setData(
                                                 'expiry_year',
-                                                onlyDigits(event.target.value, 4),
+                                                onlyDigits(
+                                                    event.target.value,
+                                                    4,
+                                                ),
                                             )
                                         }
                                         disabled={useSavedPaymentMethod}
@@ -714,7 +794,8 @@ export default function CartIndex() {
                                 }
                             />
                             <span className="text-xs">
-                                I confirm the selected items and complete checkout.
+                                I confirm the selected items and complete
+                                checkout.
                             </span>
                         </label>
                         {form.errors.accepted && (

@@ -36,7 +36,9 @@ export default function FlashMessages({ className = '' }: Props) {
 
     const [dismissed, setDismissed] = useState<Record<string, boolean>>({});
     const flashKey = useMemo(() => {
-        return messages.map((message) => `${message.type}:${message.text}`).join('|');
+        return messages
+            .map((message) => `${message.type}:${message.text}`)
+            .join('|');
     }, [messages]);
 
     if (messages.length === 0) return null;

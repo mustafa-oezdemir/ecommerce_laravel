@@ -89,7 +89,9 @@ export function filterRowsByRange(
             row,
             date: parseLabelToDate(row.date),
         }))
-        .filter((entry): entry is { row: ChartRow; date: Date } => !!entry.date);
+        .filter(
+            (entry): entry is { row: ChartRow; date: Date } => !!entry.date,
+        );
 
     if (parsedRows.length === 0) {
         return rows;

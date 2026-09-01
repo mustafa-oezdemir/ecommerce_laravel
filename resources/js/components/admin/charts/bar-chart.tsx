@@ -49,7 +49,10 @@ export default function BarChart({
                                 className="h-2 rounded-full bg-primary/70"
                                 style={{
                                     width: `${Math.max(2, (point.value / maxValue) * 100)}%`,
-                                    background: barGradients[index % barGradients.length],
+                                    background:
+                                        barGradients[
+                                            index % barGradients.length
+                                        ],
                                 }}
                             />
                         </div>

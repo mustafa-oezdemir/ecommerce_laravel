@@ -149,7 +149,8 @@ export default function Show({ product }: Props) {
                                                 a.sort_order - b.sort_order,
                                         )
                                         .map((img) => {
-                                            const imageUrl = resolveImageUrl(img);
+                                            const imageUrl =
+                                                resolveImageUrl(img);
 
                                             return (
                                                 <div
@@ -165,7 +166,10 @@ export default function Show({ product }: Props) {
                                                     {imageUrl ? (
                                                         <img
                                                             src={imageUrl}
-                                                            alt={img.alt ?? product.name}
+                                                            alt={
+                                                                img.alt ??
+                                                                product.name
+                                                            }
                                                             className="h-full w-full object-cover"
                                                         />
                                                     ) : null}
@@ -258,7 +262,8 @@ export default function Show({ product }: Props) {
                                     Brand / Model
                                 </div>
                                 <div className="mt-1 text-sm font-medium">
-                                    {product.brand ?? '—'} / {product.model_name ?? '—'}
+                                    {product.brand ?? '—'} /{' '}
+                                    {product.model_name ?? '—'}
                                 </div>
                             </div>
 
@@ -267,7 +272,8 @@ export default function Show({ product }: Props) {
                                     Type / Color
                                 </div>
                                 <div className="mt-1 text-sm font-medium">
-                                    {product.product_type ?? '—'} / {product.color ?? '—'}
+                                    {product.product_type ?? '—'} /{' '}
+                                    {product.color ?? '—'}
                                 </div>
                             </div>
 
@@ -285,7 +291,9 @@ export default function Show({ product }: Props) {
                                     Clothing sizes
                                 </div>
                                 <div className="mt-1 text-sm font-medium">
-                                    {(product.available_clothing_sizes ?? []).join(', ') || '—'}
+                                    {(
+                                        product.available_clothing_sizes ?? []
+                                    ).join(', ') || '—'}
                                 </div>
                             </div>
 
@@ -294,7 +302,9 @@ export default function Show({ product }: Props) {
                                     Shoe sizes
                                 </div>
                                 <div className="mt-1 text-sm font-medium">
-                                    {(product.available_shoe_sizes ?? []).join(', ') || '—'}
+                                    {(product.available_shoe_sizes ?? []).join(
+                                        ', ',
+                                    ) || '—'}
                                 </div>
                             </div>
                         </div>

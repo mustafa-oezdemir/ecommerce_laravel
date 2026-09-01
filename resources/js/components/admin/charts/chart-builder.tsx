@@ -98,8 +98,12 @@ export default function ChartBuilder() {
     const [metric, setMetric] = useState<BuilderMetric>('revenue');
     const [granularity, setGranularity] = useState<BuilderGranularity>('day');
     const [range, setRange] = useState<BuilderRange>('90d');
-    const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
-    const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+        null,
+    );
+    const [selectedProductId, setSelectedProductId] = useState<number | null>(
+        null,
+    );
     const [chartType, setChartType] = useState<BuilderChartType>('area');
     const [series, setSeries] = useState<ChartSeriesPoint[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -170,8 +174,10 @@ export default function ChartBuilder() {
         const targetMetric = overrides?.metric ?? metric;
         const targetGranularity = overrides?.granularity ?? granularity;
         const targetRange = overrides?.range ?? range;
-        const targetCategoryId = overrides?.selectedCategoryId ?? selectedCategoryId;
-        const targetProductId = overrides?.selectedProductId ?? selectedProductId;
+        const targetCategoryId =
+            overrides?.selectedCategoryId ?? selectedCategoryId;
+        const targetProductId =
+            overrides?.selectedProductId ?? selectedProductId;
 
         const scopeId =
             targetScope === 'overall'
@@ -219,14 +225,16 @@ export default function ChartBuilder() {
 
     const generatedDescription = `Scope: ${scope} · Metric: ${metric} · Frequency: ${granularity} · Last: ${range}`;
     const selectedCategoryName =
-        categories.find((category) => category.id === selectedCategoryId)?.name ?? null;
+        categories.find((category) => category.id === selectedCategoryId)
+            ?.name ?? null;
     const selectedProductName =
-        products.find((product) => product.id === selectedProductId)?.name ?? null;
+        products.find((product) => product.id === selectedProductId)?.name ??
+        null;
     const areaSeriesLabel =
         scope === 'category'
-            ? selectedCategoryName ?? 'Selected category'
+            ? (selectedCategoryName ?? 'Selected category')
             : scope === 'product'
-              ? selectedProductName ?? 'Selected product'
+              ? (selectedProductName ?? 'Selected product')
               : 'Overall';
     const noCategoriesAvailable = categories.length === 0;
     const requiresCategory = scope === 'category';
@@ -234,7 +242,8 @@ export default function ChartBuilder() {
     const hasRequiredSelections =
         (!requiresCategory || selectedCategoryId !== null) &&
         (!requiresProduct || selectedProductId !== null);
-    const canGenerate = !bootstrapping && !loadingSeries && hasRequiredSelections;
+    const canGenerate =
+        !bootstrapping && !loadingSeries && hasRequiredSelections;
 
     return (
         <div className="space-y-4">
@@ -255,7 +264,8 @@ export default function ChartBuilder() {
                             <select
                                 value={scope}
                                 onChange={(event) => {
-                                    const nextScope = event.target.value as BuilderScope;
+                                    const nextScope = event.target
+                                        .value as BuilderScope;
                                     setScope(nextScope);
                                     setError(null);
                                     setSelectedProductId(null);
@@ -287,7 +297,9 @@ export default function ChartBuilder() {
                                 value={metric}
                                 onChange={(event) => {
                                     setError(null);
-                                    setMetric(event.target.value as BuilderMetric);
+                                    setMetric(
+                                        event.target.value as BuilderMetric,
+                                    );
                                 }}
                                 className="rounded-md border bg-background px-3 py-2 text-sm"
                             >
@@ -301,7 +313,8 @@ export default function ChartBuilder() {
                                 onChange={(event) => {
                                     setError(null);
                                     setGranularity(
-                                        event.target.value as BuilderGranularity,
+                                        event.target
+                                            .value as BuilderGranularity,
                                     );
                                 }}
                                 className="rounded-md border bg-background px-3 py-2 text-sm"
@@ -317,7 +330,9 @@ export default function ChartBuilder() {
                                 value={range}
                                 onChange={(event) => {
                                     setError(null);
-                                    setRange(event.target.value as BuilderRange);
+                                    setRange(
+                                        event.target.value as BuilderRange,
+                                    );
                                 }}
                                 className="rounded-md border bg-background px-3 py-2 text-sm"
                             >
@@ -334,11 +349,15 @@ export default function ChartBuilder() {
                         <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
                             <select
                                 value={selectedCategoryId ?? ''}
-                                disabled={scope === 'overall' || noCategoriesAvailable}
+                                disabled={
+                                    scope === 'overall' || noCategoriesAvailable
+                                }
                                 onChange={(event) => {
                                     const rawValue = event.target.value;
                                     const nextCategoryId =
-                                        rawValue === '' ? null : Number(rawValue);
+                                        rawValue === ''
+                                            ? null
+                                            : Number(rawValue);
                                     setError(null);
                                     setSelectedCategoryId(nextCategoryId);
                                     setSelectedProductId(null);
@@ -364,7 +383,10 @@ export default function ChartBuilder() {
                                         : 'Select category'}
                                 </option>
                                 {categories.map((category) => (
-                                    <option key={category.id} value={category.id}>
+                                    <option
+                                        key={category.id}
+                                        value={category.id}
+                                    >
                                         {category.name}
                                     </option>
                                 ))}
@@ -377,13 +399,16 @@ export default function ChartBuilder() {
                                     const rawValue = event.target.value;
                                     setError(null);
                                     setSelectedProductId(
-                                        rawValue === '' ? null : Number(rawValue),
+                                        rawValue === ''
+                                            ? null
+                                            : Number(rawValue),
                                     );
                                 }}
                                 className="rounded-md border bg-background px-3 py-2 text-sm disabled:opacity-50"
                             >
                                 <option value="">
-                                    {scope === 'product' && selectedCategoryId === null
+                                    {scope === 'product' &&
+                                    selectedCategoryId === null
                                         ? 'Select product (all categories)'
                                         : 'Select product'}
                                 </option>
@@ -398,7 +423,9 @@ export default function ChartBuilder() {
                                 value={chartType}
                                 onChange={(event) => {
                                     setError(null);
-                                    setChartType(event.target.value as BuilderChartType);
+                                    setChartType(
+                                        event.target.value as BuilderChartType,
+                                    );
                                 }}
                                 className="rounded-md border bg-background px-3 py-2 text-sm"
                             >
@@ -413,22 +440,25 @@ export default function ChartBuilder() {
                                 onClick={() => void generateChart()}
                                 disabled={!canGenerate}
                             >
-                                {loadingSeries ? 'Generating...' : 'Generate chart'}
+                                {loadingSeries
+                                    ? 'Generating...'
+                                    : 'Generate chart'}
                             </Button>
                         </div>
 
                         {!hasRequiredSelections ? (
                             <p className="text-sm text-muted-foreground">
                                 Select the required{' '}
-                                {scope === 'product' ? 'product' : 'category'} to
-                                generate this chart.
+                                {scope === 'product' ? 'product' : 'category'}{' '}
+                                to generate this chart.
                             </p>
                         ) : null}
 
                         {noCategoriesAvailable ? (
                             <p className="text-sm text-muted-foreground">
-                                No categories found. Category scope is disabled. You
-                                can still generate product charts from all products.
+                                No categories found. Category scope is disabled.
+                                You can still generate product charts from all
+                                products.
                             </p>
                         ) : null}
 

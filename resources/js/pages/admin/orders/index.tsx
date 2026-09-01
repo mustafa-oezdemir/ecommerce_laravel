@@ -1,7 +1,10 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
-import { index as ordersIndex, show as ordersShow } from '@/routes/admin/orders';
+import {
+    index as ordersIndex,
+    show as ordersShow,
+} from '@/routes/admin/orders';
 import type { BreadcrumbItem } from '@/types';
 
 type OrderRow = {
@@ -41,7 +44,9 @@ type Props = {
     statuses: Array<'pending' | 'paid' | 'shipped' | 'cancelled'>;
 };
 
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Orders', href: ordersIndex().url }];
+const breadcrumbs: BreadcrumbItem[] = [
+    { title: 'Orders', href: ordersIndex().url },
+];
 
 function stripHtml(label: string): string {
     return label.replace(/<[^>]*>/g, '').trim();
@@ -126,7 +131,9 @@ export default function AdminOrdersIndex({ orders, filters, statuses }: Props) {
 
             <div className="space-y-6">
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Orders</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">
+                        Orders
+                    </h1>
                     <p className="text-sm text-muted-foreground">
                         Review customer orders and drill into details.
                     </p>
@@ -211,7 +218,9 @@ export default function AdminOrdersIndex({ orders, filters, statuses }: Props) {
                             <input
                                 type="date"
                                 value={dateTo}
-                                onChange={(event) => setDateTo(event.target.value)}
+                                onChange={(event) =>
+                                    setDateTo(event.target.value)
+                                }
                                 className="w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background outline-none focus:ring-2 focus:ring-ring"
                             />
                         </div>
@@ -223,12 +232,24 @@ export default function AdminOrdersIndex({ orders, filters, statuses }: Props) {
                         <table className="w-full text-sm">
                             <thead className="border-b bg-muted/40 text-left">
                                 <tr>
-                                    <th className="px-4 py-3 font-medium">Reference</th>
-                                    <th className="px-4 py-3 font-medium">Email</th>
-                                    <th className="px-4 py-3 font-medium">Status</th>
-                                    <th className="px-4 py-3 font-medium">Items</th>
-                                    <th className="px-4 py-3 font-medium">Total</th>
-                                    <th className="px-4 py-3 font-medium">Created</th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Reference
+                                    </th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Email
+                                    </th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Status
+                                    </th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Items
+                                    </th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Total
+                                    </th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Created
+                                    </th>
                                     <th className="px-4 py-3 font-medium" />
                                 </tr>
                             </thead>
@@ -292,13 +313,28 @@ export default function AdminOrdersIndex({ orders, filters, statuses }: Props) {
 
                     <div className="flex flex-col gap-3 border-t p-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="text-xs text-muted-foreground">
-                            {orders.meta?.from != null && orders.meta?.to != null ? (
+                            {orders.meta?.from != null &&
+                            orders.meta?.to != null ? (
                                 <>
-                                    Showing <span className="font-medium">{orders.meta.from}</span>-<span className="font-medium">{orders.meta.to}</span> of <span className="font-medium">{orders.meta.total}</span>
+                                    Showing{' '}
+                                    <span className="font-medium">
+                                        {orders.meta.from}
+                                    </span>
+                                    -
+                                    <span className="font-medium">
+                                        {orders.meta.to}
+                                    </span>{' '}
+                                    of{' '}
+                                    <span className="font-medium">
+                                        {orders.meta.total}
+                                    </span>
                                 </>
                             ) : (
                                 <>
-                                    Showing <span className="font-medium">{orders.data.length}</span>
+                                    Showing{' '}
+                                    <span className="font-medium">
+                                        {orders.data.length}
+                                    </span>
                                 </>
                             )}
                         </div>

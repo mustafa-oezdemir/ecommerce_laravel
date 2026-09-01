@@ -98,9 +98,16 @@ function cleanPaginationLabel(label: string): string {
         .trim();
 }
 
-export default function ShopIndex({ products, categories, filter_options, filters }: Props) {
+export default function ShopIndex({
+    products,
+    categories,
+    filter_options,
+    filters,
+}: Props) {
     const { addItem, itemCount } = useCart();
-    const [justAddedProductId, setJustAddedProductId] = useState<number | null>(null);
+    const [justAddedProductId, setJustAddedProductId] = useState<number | null>(
+        null,
+    );
     const [filterForm, setFilterForm] = useState<FilterForm>({
         category: filters.category ?? '',
         search: filters.search ?? '',
@@ -211,11 +218,15 @@ export default function ShopIndex({ products, categories, filter_options, filter
             max_price: '',
         });
 
-        router.get(shopIndex().url, {}, {
-            preserveState: true,
-            preserveScroll: true,
-            replace: true,
-        });
+        router.get(
+            shopIndex().url,
+            {},
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+            },
+        );
     };
 
     const hasActiveFilters =
@@ -242,11 +253,16 @@ export default function ShopIndex({ products, categories, filter_options, filter
                                 Shop
                             </h1>
                             <p className="mt-2 text-sm text-slate-700">
-                                Search, brand, model, size and price filters with 9 products per page.
+                                Search, brand, model, size and price filters
+                                with 9 products per page.
                             </p>
                         </div>
 
-                        <Button asChild variant="outline" className="bg-white/70">
+                        <Button
+                            asChild
+                            variant="outline"
+                            className="bg-white/70"
+                        >
                             <Link href={cartIndex()}>
                                 <ShoppingCart className="mr-2 size-4" />
                                 Cart ({itemCount})
@@ -260,7 +276,7 @@ export default function ShopIndex({ products, categories, filter_options, filter
                                 Search product name
                             </label>
                             <div className="relative">
-                                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                                <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
                                 <input
                                     type="text"
                                     value={filterForm.search}
@@ -270,7 +286,7 @@ export default function ShopIndex({ products, categories, filter_options, filter
                                             search: event.target.value,
                                         }))
                                     }
-                                    className="h-10 w-full rounded-md border bg-background pl-9 pr-3 text-sm"
+                                    className="h-10 w-full rounded-md border bg-background pr-3 pl-9 text-sm"
                                     placeholder="e.g. Runner"
                                 />
                             </div>
@@ -292,7 +308,10 @@ export default function ShopIndex({ products, categories, filter_options, filter
                             >
                                 <option value="">All categories</option>
                                 {categories.map((category) => (
-                                    <option key={category.id} value={category.slug}>
+                                    <option
+                                        key={category.id}
+                                        value={category.slug}
+                                    >
                                         {category.name}
                                     </option>
                                 ))}
@@ -383,11 +402,16 @@ export default function ShopIndex({ products, categories, filter_options, filter
                                 className="h-10 w-full rounded-md border bg-background px-3 text-sm"
                             >
                                 <option value="">All types</option>
-                                {filter_options.product_types.map((productType) => (
-                                    <option key={productType} value={productType}>
-                                        {productType}
-                                    </option>
-                                ))}
+                                {filter_options.product_types.map(
+                                    (productType) => (
+                                        <option
+                                            key={productType}
+                                            value={productType}
+                                        >
+                                            {productType}
+                                        </option>
+                                    ),
+                                )}
                             </select>
                         </div>
 
@@ -502,7 +526,8 @@ export default function ShopIndex({ products, categories, filter_options, filter
 
                 <div className="mt-5 flex items-center justify-between text-sm text-muted-foreground">
                     <p>
-                        {products.from ?? 0}-{products.to ?? 0} / {products.total}
+                        {products.from ?? 0}-{products.to ?? 0} /{' '}
+                        {products.total}
                     </p>
                     {hasActiveFilters ? (
                         <p className="inline-flex items-center gap-1">
@@ -524,7 +549,10 @@ export default function ShopIndex({ products, categories, filter_options, filter
                                     key={product.id}
                                     className="group overflow-hidden rounded-2xl border bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                                 >
-                                    <Link href={shopShow(product.slug)} className="block">
+                                    <Link
+                                        href={shopShow(product.slug)}
+                                        className="block"
+                                    >
                                         <div className="h-48 overflow-hidden bg-muted">
                                             {product.image_url ? (
                                                 <img
@@ -544,7 +572,10 @@ export default function ShopIndex({ products, categories, filter_options, filter
                                         <div className="flex flex-wrap items-center gap-1">
                                             {product.primary_category ? (
                                                 <span className="inline-flex items-center rounded-full border bg-muted/50 px-2 py-0.5 text-xs">
-                                                    {product.primary_category.name}
+                                                    {
+                                                        product.primary_category
+                                                            .name
+                                                    }
                                                 </span>
                                             ) : null}
                                             {product.brand ? (
@@ -564,7 +595,10 @@ export default function ShopIndex({ products, categories, filter_options, filter
                                             ) : null}
                                         </div>
 
-                                        <Link href={shopShow(product.slug)} className="block">
+                                        <Link
+                                            href={shopShow(product.slug)}
+                                            className="block"
+                                        >
                                             <h2 className="line-clamp-1 text-base font-semibold group-hover:underline">
                                                 {product.name}
                                             </h2>
@@ -576,7 +610,8 @@ export default function ShopIndex({ products, categories, filter_options, filter
                                         ) : null}
 
                                         <p className="line-clamp-2 text-sm text-muted-foreground">
-                                            {product.description ?? 'No description.'}
+                                            {product.description ??
+                                                'No description.'}
                                         </p>
 
                                         <div className="flex items-end justify-between">
@@ -584,36 +619,59 @@ export default function ShopIndex({ products, categories, filter_options, filter
                                                 <p className="text-lg font-semibold">
                                                     {formatMoney(product.price)}
                                                 </p>
-                                                {product.compare_at_price !== null &&
-                                                product.compare_at_price > product.price ? (
+                                                {product.compare_at_price !==
+                                                    null &&
+                                                product.compare_at_price >
+                                                    product.price ? (
                                                     <p className="text-xs text-muted-foreground line-through">
-                                                        {formatMoney(product.compare_at_price)}
+                                                        {formatMoney(
+                                                            product.compare_at_price,
+                                                        )}
                                                     </p>
                                                 ) : null}
                                             </div>
 
                                             <div className="flex items-center gap-2">
-                                                <Button asChild variant="outline" size="sm">
-                                                    <Link href={shopShow(product.slug)}>
+                                                <Button
+                                                    asChild
+                                                    variant="outline"
+                                                    size="sm"
+                                                >
+                                                    <Link
+                                                        href={shopShow(
+                                                            product.slug,
+                                                        )}
+                                                    >
                                                         View
                                                     </Link>
                                                 </Button>
                                                 {product.has_size_options ? (
                                                     <Button asChild size="sm">
-                                                        <Link href={shopShow(product.slug)}>
+                                                        <Link
+                                                            href={shopShow(
+                                                                product.slug,
+                                                            )}
+                                                        >
                                                             Choose
                                                         </Link>
                                                     </Button>
                                                 ) : (
                                                     <Button
                                                         type="button"
-                                                        onClick={() => handleAddToCart(product)}
-                                                        disabled={product.stock <= 0}
+                                                        onClick={() =>
+                                                            handleAddToCart(
+                                                                product,
+                                                            )
+                                                        }
+                                                        disabled={
+                                                            product.stock <= 0
+                                                        }
                                                         size="sm"
                                                     >
                                                         {product.stock <= 0
                                                             ? 'Out'
-                                                            : justAddedProductId === product.id
+                                                            : justAddedProductId ===
+                                                                product.id
                                                               ? 'Added'
                                                               : 'Add'}
                                                     </Button>

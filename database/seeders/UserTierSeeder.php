@@ -28,26 +28,37 @@ class UserTierSeeder extends Seeder
                 ->title()
                 ->value();
 
-            User::query()->firstOrCreate(
+            $admin = User::query()->updateOrCreate(
                 ['email' => $email],
                 [
                     'name' => $defaultName !== '' ? $defaultName : 'Admin',
                     'tier' => CustomerTier::Platinum->value,
-                    'password' => 'password',
-                    'email_verified_at' => now(),
+                    'password' => $this->seedPassword(),
                 ],
             );
+
+            $admin->forceFill(['email_verified_at' => now()])->save();
         }
     }
 
     private function seedTierSamples(): void
     {
         foreach (CustomerTier::cases() as $tier) {
-            User::factory()
-                ->count(3)
-                ->create([
+            $customer = User::query()->updateOrCreate(
+                ['email' => $tier->value.'@example.com'],
+                [
+                    'name' => $tier->label().' Customer',
                     'tier' => $tier->value,
-                ]);
+                    'password' => $this->seedPassword(),
+                ],
+            );
+
+            $customer->forceFill(['email_verified_at' => now()])->save();
         }
+    }
+
+    private function seedPassword(): string
+    {
+        return (string) env('SEED_USER_PASSWORD', 'password');
     }
 }

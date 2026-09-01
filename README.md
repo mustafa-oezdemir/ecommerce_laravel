@@ -138,20 +138,29 @@ docker compose up -d mysql mailhog
 docker compose run --rm app php artisan migrate --seed
 ```
 
-The seeder creates an administrator only when `ADMIN_EMAILS` contains its address:
+The idempotent seeder creates 60 sample products, one administrator and one
+customer for every pricing tier. Configure the administrator and shared local
+seed password before running it:
 
 ```env
 ADMIN_EMAILS=admin@example.com
+SEED_USER_PASSWORD=change-this-seed-password
 ```
 
 Default local credentials:
 
 ```text
-Email:    admin@example.com
-Password: password
+admin@example.com
+platinum@example.com
+gold@example.com
+silver@example.com
+bronze@example.com
+
+Password: the value of SEED_USER_PASSWORD
 ```
 
-> Change the seeded password immediately outside local development.
+> Seed accounts are intended for local/demo environments. Never use the example
+> password in production.
 
 ### 4. Start the complete stack
 
@@ -224,6 +233,7 @@ Use GitHub **Secrets** for sensitive values:
 | `MAIL_PASSWORD`         | Production SMTP password; MailHog does not need one                                |
 | `AWS_ACCESS_KEY_ID`     | Optional object-storage access key                                                 |
 | `AWS_SECRET_ACCESS_KEY` | Optional object-storage secret key                                                 |
+| `SEED_USER_PASSWORD`    | Password for local/demo seed accounts                                              |
 
 Use GitHub **Variables** for non-sensitive configuration:
 

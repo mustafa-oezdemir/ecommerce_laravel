@@ -66,7 +66,7 @@ export default function Welcome({
         <MarketingLayout title="Welcome" canRegister={canRegister}>
             <section className="relative overflow-hidden border-b border-black/5 bg-gradient-to-b from-[#f6f8ff] via-[#fbfcff] to-[#fdfdfc] dark:border-white/10 dark:from-[#0f1220] dark:via-[#0c0f18] dark:to-[#0a0a0a]">
                 <div className="pointer-events-none absolute inset-0">
-                    <div className="absolute -left-24 top-12 h-56 w-56 rounded-full bg-sky-400/20 blur-3xl" />
+                    <div className="absolute top-12 -left-24 h-56 w-56 rounded-full bg-sky-400/20 blur-3xl" />
                     <div className="absolute -right-20 bottom-0 h-64 w-64 rounded-full bg-emerald-400/20 blur-3xl" />
                 </div>
 
@@ -78,13 +78,14 @@ export default function Welcome({
                         </div>
 
                         <h1 className="mt-5 text-4xl font-semibold tracking-tight text-[#131315] sm:text-5xl dark:text-white">
-                            Launch a polished store without rebuilding the basics.
+                            Launch a polished store without rebuilding the
+                            basics.
                         </h1>
 
                         <p className="mt-4 max-w-2xl text-base leading-7 text-black/70 dark:text-white/70">
-                            This project gives you a production-oriented baseline with
-                            storefront flows, checkout, customer account pages and an
-                            admin layer.
+                            This project gives you a production-oriented
+                            baseline with storefront flows, checkout, customer
+                            account pages and an admin layer.
                         </p>
 
                         <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -97,7 +98,9 @@ export default function Welcome({
 
                             {isAuthenticated ? (
                                 <Button asChild variant="outline" size="lg">
-                                    <Link href={dashboard()}>Go to dashboard</Link>
+                                    <Link href={dashboard()}>
+                                        Go to dashboard
+                                    </Link>
                                 </Button>
                             ) : (
                                 <>
@@ -106,8 +109,14 @@ export default function Welcome({
                                     </Button>
 
                                     {canRegister && (
-                                        <Button asChild variant="secondary" size="lg">
-                                            <Link href={register()}>Create account</Link>
+                                        <Button
+                                            asChild
+                                            variant="secondary"
+                                            size="lg"
+                                        >
+                                            <Link href={register()}>
+                                                Create account
+                                            </Link>
                                         </Button>
                                     )}
                                 </>
@@ -152,8 +161,9 @@ export default function Welcome({
                             Ship confidently in four focused steps.
                         </h2>
                         <p className="mt-3 text-sm leading-6 text-black/70 dark:text-white/70">
-                            Keep scope tight in the first release, then expand catalog depth,
-                            promotions and analytics with real user feedback.
+                            Keep scope tight in the first release, then expand
+                            catalog depth, promotions and analytics with real
+                            user feedback.
                         </p>
                     </div>
 

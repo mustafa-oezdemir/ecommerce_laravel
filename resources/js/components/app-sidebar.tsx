@@ -13,6 +13,7 @@ import {
     Folder,
 } from 'lucide-react';
 
+import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -25,16 +26,14 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-
 import { toUrl } from '@/lib/utils';
-import type { Auth, NavItem } from '@/types';
-import AppLogo from '@/components/app-logo';
 import { dashboard, home } from '@/routes';
 import { index as adminCategoriesIndex } from '@/routes/admin/categories';
 import { index as adminOrdersIndex } from '@/routes/admin/orders';
 import { index as adminOverviewIndex } from '@/routes/admin/overview';
 import { trashed as adminProductImagesTrashed } from '@/routes/admin/product-images';
 import { index as adminProductsIndex } from '@/routes/admin/products';
+import type { Auth, NavItem } from '@/types';
 
 const platformNavItems: NavItem[] = [
     { title: 'Dashboard', href: dashboard(), icon: LayoutGrid },
@@ -96,7 +95,9 @@ export function AppSidebar() {
             <SidebarContent>
                 <NavMain label="Platform" items={platformNavItems} />
                 <NavMain label="Account" items={accountNavItems} />
-                {canAccessAdmin && <NavMain label="Admin" items={adminNavItems} />}
+                {canAccessAdmin && (
+                    <NavMain label="Admin" items={adminNavItems} />
+                )}
             </SidebarContent>
 
             <SidebarFooter>

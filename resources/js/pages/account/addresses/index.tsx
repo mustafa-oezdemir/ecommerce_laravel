@@ -65,7 +65,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function AddressesIndex() {
     const { addresses } = usePage<{ addresses: Address[] }>().props;
-    const [editingAddressId, setEditingAddressId] = useState<number | null>(null);
+    const [editingAddressId, setEditingAddressId] = useState<number | null>(
+        null,
+    );
     const [formVisible, setFormVisible] = useState(addresses.length === 0);
 
     const form = useForm<AddressFormData>(emptyAddressForm);

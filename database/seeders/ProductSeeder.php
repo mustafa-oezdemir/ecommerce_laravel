@@ -11,6 +11,11 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
+        // Keep repeated `db:seed` runs safe for local development.
+        if (Product::query()->exists()) {
+            return;
+        }
+
         // Ensure we have categories to attach products to.
         if (Category::query()->count() === 0) {
             // If you already have a CategorySeeder, prefer running that instead.

@@ -18,6 +18,7 @@ export type BuilderMetric = 'revenue' | 'units' | 'orders';
 
 export type BuilderGranularity = 'day' | 'week' | 'month' | 'season' | 'year';
 
-export type BuilderRange = '7d' | '15d' | '30d' | '60d' | '90d' | '180d' | '360d';
+export type BuilderRange =
+    '7d' | '15d' | '30d' | '60d' | '90d' | '180d' | '360d';
 
 export type BuilderChartType = 'area' | 'bar' | 'line' | 'tooltip';

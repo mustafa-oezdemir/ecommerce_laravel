@@ -31,7 +31,11 @@ export default function TooltipDemoChart({
     const maxValue = Math.max(...points.map((point) => point.value), 1);
 
     const activePoint = useMemo(() => {
-        return points.find((point) => point.label === activeLabel) ?? points[0] ?? null;
+        return (
+            points.find((point) => point.label === activeLabel) ??
+            points[0] ??
+            null
+        );
     }, [activeLabel, points]);
 
     if (points.length === 0) {
@@ -52,7 +56,9 @@ export default function TooltipDemoChart({
                             {valueFormatter(activePoint.value)}
                         </p>
                         {activePoint.hint ? (
-                            <p className="mt-1 text-muted-foreground">{activePoint.hint}</p>
+                            <p className="mt-1 text-muted-foreground">
+                                {activePoint.hint}
+                            </p>
                         ) : null}
                     </div>
                 ) : null}
@@ -78,7 +84,9 @@ export default function TooltipDemoChart({
                                     style={{
                                         width: `${Math.max(3, (point.value / maxValue) * 100)}%`,
                                         background:
-                                            barGradients[index % barGradients.length],
+                                            barGradients[
+                                                index % barGradients.length
+                                            ],
                                     }}
                                 />
                             </div>

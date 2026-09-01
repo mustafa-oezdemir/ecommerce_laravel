@@ -8,7 +8,6 @@ import CategoryForm, {
 } from '@/pages/admin/categories/_components/category-form';
 import type { BreadcrumbItem } from '@/types';
 
-
 type Props = {
     parents: ParentCategory[];
 };

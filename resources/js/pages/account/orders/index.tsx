@@ -70,8 +70,13 @@ function statusClasses(status: OrderRow['status']): string {
 }
 
 export default function OrdersIndex() {
-    const { auth, orders } = usePage<{ auth: Auth; orders: Paginator<OrderRow> }>().props;
-    const visibleOrders = orders.data.filter((order) => order.user_id === auth.user.id);
+    const { auth, orders } = usePage<{
+        auth: Auth;
+        orders: Paginator<OrderRow>;
+    }>().props;
+    const visibleOrders = orders.data.filter(
+        (order) => order.user_id === auth.user.id,
+    );
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -93,31 +98,55 @@ export default function OrdersIndex() {
                         <table className="w-full text-sm">
                             <thead className="border-b bg-muted/40 text-left">
                                 <tr>
-                                    <th className="px-4 py-3 font-medium">Reference</th>
-                                    <th className="px-4 py-3 font-medium">Status</th>
-                                    <th className="px-4 py-3 font-medium">Items</th>
-                                    <th className="px-4 py-3 font-medium">Total</th>
-                                    <th className="px-4 py-3 font-medium">Placed</th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Reference
+                                    </th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Status
+                                    </th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Items
+                                    </th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Total
+                                    </th>
+                                    <th className="px-4 py-3 font-medium">
+                                        Placed
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {visibleOrders.length === 0 ? (
                                     <tr>
-                                        <td className="px-4 py-8 text-center text-muted-foreground" colSpan={5}>
+                                        <td
+                                            className="px-4 py-8 text-center text-muted-foreground"
+                                            colSpan={5}
+                                        >
                                             You do not have any orders yet.
                                         </td>
                                     </tr>
                                 ) : (
                                     visibleOrders.map((order) => (
-                                        <tr key={order.id} className="border-b last:border-b-0">
-                                            <td className="px-4 py-3 font-medium">{order.public_id}</td>
+                                        <tr
+                                            key={order.id}
+                                            className="border-b last:border-b-0"
+                                        >
+                                            <td className="px-4 py-3 font-medium">
+                                                {order.public_id}
+                                            </td>
                                             <td className="px-4 py-3">
-                                                <span className={`rounded px-2 py-1 text-xs ${statusClasses(order.status)}`}>
+                                                <span
+                                                    className={`rounded px-2 py-1 text-xs ${statusClasses(order.status)}`}
+                                                >
                                                     {order.status}
                                                 </span>
                                             </td>
-                                            <td className="px-4 py-3">{order.items_count}</td>
-                                            <td className="px-4 py-3 font-medium">{formatMoney(order.total)}</td>
+                                            <td className="px-4 py-3">
+                                                {order.items_count}
+                                            </td>
+                                            <td className="px-4 py-3 font-medium">
+                                                {formatMoney(order.total)}
+                                            </td>
                                             <td className="px-4 py-3 text-muted-foreground">
                                                 {formatDate(order.placed_at)}
                                             </td>
@@ -130,13 +159,28 @@ export default function OrdersIndex() {
 
                     <div className="flex flex-col gap-3 border-t p-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="text-xs text-muted-foreground">
-                            {orders.meta?.from != null && orders.meta?.to != null ? (
+                            {orders.meta?.from != null &&
+                            orders.meta?.to != null ? (
                                 <>
-                                    Showing <span className="font-medium">{orders.meta.from}</span>-<span className="font-medium">{orders.meta.to}</span> of <span className="font-medium">{orders.meta.total}</span>
+                                    Showing{' '}
+                                    <span className="font-medium">
+                                        {orders.meta.from}
+                                    </span>
+                                    -
+                                    <span className="font-medium">
+                                        {orders.meta.to}
+                                    </span>{' '}
+                                    of{' '}
+                                    <span className="font-medium">
+                                        {orders.meta.total}
+                                    </span>
                                 </>
                             ) : (
                                 <>
-                                    Showing <span className="font-medium">{visibleOrders.length}</span>
+                                    Showing{' '}
+                                    <span className="font-medium">
+                                        {visibleOrders.length}
+                                    </span>
                                 </>
                             )}
                         </div>

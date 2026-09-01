@@ -89,7 +89,8 @@ export default function AdminOrderShow({ order, allowedStatuses }: Props) {
                             {order.public_id}
                         </h1>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Created {new Date(order.created_at).toLocaleString()}
+                            Created{' '}
+                            {new Date(order.created_at).toLocaleString()}
                         </p>
                     </div>
 
@@ -103,7 +104,9 @@ export default function AdminOrderShow({ order, allowedStatuses }: Props) {
                         <button
                             type="button"
                             onClick={() => {
-                                void navigator.clipboard.writeText(order.public_id);
+                                void navigator.clipboard.writeText(
+                                    order.public_id,
+                                );
                             }}
                             className="rounded-md border bg-background px-3 py-1.5 text-xs font-medium hover:bg-accent"
                         >
@@ -128,23 +131,33 @@ export default function AdminOrderShow({ order, allowedStatuses }: Props) {
 
                             <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
                                 <div>
-                                    <dt className="text-muted-foreground">Name</dt>
+                                    <dt className="text-muted-foreground">
+                                        Name
+                                    </dt>
                                     <dd className="font-medium">
                                         {order.customer_name ?? '—'}
                                     </dd>
                                 </div>
                                 <div>
-                                    <dt className="text-muted-foreground">Email</dt>
-                                    <dd className="font-medium">{order.email}</dd>
+                                    <dt className="text-muted-foreground">
+                                        Email
+                                    </dt>
+                                    <dd className="font-medium">
+                                        {order.email}
+                                    </dd>
                                 </div>
                                 <div>
-                                    <dt className="text-muted-foreground">Phone</dt>
+                                    <dt className="text-muted-foreground">
+                                        Phone
+                                    </dt>
                                     <dd className="font-medium">
                                         {order.phone ?? '—'}
                                     </dd>
                                 </div>
                                 <div>
-                                    <dt className="text-muted-foreground">User</dt>
+                                    <dt className="text-muted-foreground">
+                                        User
+                                    </dt>
                                     <dd className="font-medium">
                                         {order.user ? order.user.name : 'Guest'}
                                     </dd>
@@ -160,13 +173,32 @@ export default function AdminOrderShow({ order, allowedStatuses }: Props) {
                             <div className="mt-3 text-sm">
                                 {order.shipping_address_snapshot ? (
                                     <div className="space-y-1">
-                                        <div>{order.shipping_address_snapshot.line1}</div>
-                                        {order.shipping_address_snapshot.line2 && (
-                                            <div>{order.shipping_address_snapshot.line2}</div>
+                                        <div>
+                                            {
+                                                order.shipping_address_snapshot
+                                                    .line1
+                                            }
+                                        </div>
+                                        {order.shipping_address_snapshot
+                                            .line2 && (
+                                            <div>
+                                                {
+                                                    order
+                                                        .shipping_address_snapshot
+                                                        .line2
+                                                }
+                                            </div>
                                         )}
                                         <div>
-                                            {order.shipping_address_snapshot.city},{' '}
-                                            {order.shipping_address_snapshot.state}{' '}
+                                            {
+                                                order.shipping_address_snapshot
+                                                    .city
+                                            }
+                                            ,{' '}
+                                            {
+                                                order.shipping_address_snapshot
+                                                    .state
+                                            }{' '}
                                             {
                                                 order.shipping_address_snapshot
                                                     .postal_code
@@ -328,12 +360,12 @@ export default function AdminOrderShow({ order, allowedStatuses }: Props) {
                                     <dt className="text-muted-foreground">
                                         Shipping
                                     </dt>
-                                    <dd>
-                                        {formatMoney(order.shipping_total)}
-                                    </dd>
+                                    <dd>{formatMoney(order.shipping_total)}</dd>
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <dt className="text-muted-foreground">Tax</dt>
+                                    <dt className="text-muted-foreground">
+                                        Tax
+                                    </dt>
                                     <dd>{formatMoney(order.tax_total)}</dd>
                                 </div>
                                 <div className="flex items-center justify-between border-t pt-2 text-base font-semibold">

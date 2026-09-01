@@ -52,14 +52,19 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function PaymentMethodsIndex() {
-    const { paymentMethods } = usePage<{ paymentMethods: PaymentMethod[] }>().props;
-    const [editingPaymentMethodId, setEditingPaymentMethodId] = useState<number | null>(null);
+    const { paymentMethods } = usePage<{ paymentMethods: PaymentMethod[] }>()
+        .props;
+    const [editingPaymentMethodId, setEditingPaymentMethodId] = useState<
+        number | null
+    >(null);
     const [formVisible, setFormVisible] = useState(paymentMethods.length === 0);
 
     const form = useForm<PaymentMethodFormData>(emptyPaymentMethodForm);
 
     const isEditing = editingPaymentMethodId !== null;
-    const pageTitle = isEditing ? 'Edit Payment Method' : 'Add New Payment Method';
+    const pageTitle = isEditing
+        ? 'Edit Payment Method'
+        : 'Add New Payment Method';
     const primaryActionLabel = isEditing ? 'Update Card' : 'Save Card';
 
     const sortedPaymentMethods = useMemo(() => {

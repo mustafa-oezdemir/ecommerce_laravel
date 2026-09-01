@@ -118,7 +118,9 @@ export default function ShopView({ product }: Props) {
 
     const resolvedVariantKey = [
         String(product.id),
-        ...Object.entries(selectedOptions).map(([key, value]) => `${key}:${value}`),
+        ...Object.entries(selectedOptions).map(
+            ([key, value]) => `${key}:${value}`,
+        ),
     ].join('|');
 
     const handleQuantityChange = (value: string): void => {
@@ -207,7 +209,9 @@ export default function ShopView({ product }: Props) {
                                     <button
                                         key={image.id}
                                         type="button"
-                                        onClick={() => setSelectedImageIndex(index)}
+                                        onClick={() =>
+                                            setSelectedImageIndex(index)
+                                        }
                                         className={`aspect-square overflow-hidden rounded-lg border transition ${
                                             index === selectedImageIndex
                                                 ? 'border-primary ring-2 ring-primary/25'
@@ -216,7 +220,10 @@ export default function ShopView({ product }: Props) {
                                     >
                                         <img
                                             src={image.image_url}
-                                            alt={image.alt ?? `${product.name} ${index + 1}`}
+                                            alt={
+                                                image.alt ??
+                                                `${product.name} ${index + 1}`
+                                            }
                                             className="h-full w-full object-cover"
                                         />
                                     </button>
@@ -244,7 +251,9 @@ export default function ShopView({ product }: Props) {
                             ) : null}
                         </div>
 
-                        <p className="text-2xl font-bold">{formatMoney(product.price)}</p>
+                        <p className="text-2xl font-bold">
+                            {formatMoney(product.price)}
+                        </p>
 
                         {product.compare_at_price !== null &&
                         product.compare_at_price > product.price ? (
@@ -254,17 +263,21 @@ export default function ShopView({ product }: Props) {
                         ) : null}
 
                         <p className="mt-4 text-sm text-muted-foreground">
-                            {product.description ?? 'No description available for this product.'}
+                            {product.description ??
+                                'No description available for this product.'}
                         </p>
 
                         <div className="mt-5 rounded-lg border bg-muted/30 p-3 text-sm">
                             <p>
                                 <span className="font-medium">Stock:</span>{' '}
-                                {product.stock > 0 ? `${product.stock} available` : 'Out of stock'}
+                                {product.stock > 0
+                                    ? `${product.stock} available`
+                                    : 'Out of stock'}
                             </p>
                             <p>
                                 <span className="font-medium">Gallery:</span>{' '}
-                                {product.images.length} image{product.images.length === 1 ? '' : 's'}
+                                {product.images.length} image
+                                {product.images.length === 1 ? '' : 's'}
                             </p>
                             <p>
                                 <span className="font-medium">Color:</span>{' '}
@@ -290,16 +303,25 @@ export default function ShopView({ product }: Props) {
                                         <select
                                             value={selectedClothingSize}
                                             onChange={(event) =>
-                                                setSelectedClothingSize(event.target.value)
+                                                setSelectedClothingSize(
+                                                    event.target.value,
+                                                )
                                             }
                                             className="h-10 w-full rounded-md border bg-background px-3 text-sm"
                                         >
-                                            <option value="">Select size</option>
-                                            {product.available_clothing_sizes.map((size) => (
-                                                <option key={size} value={size}>
-                                                    {size}
-                                                </option>
-                                            ))}
+                                            <option value="">
+                                                Select size
+                                            </option>
+                                            {product.available_clothing_sizes.map(
+                                                (size) => (
+                                                    <option
+                                                        key={size}
+                                                        value={size}
+                                                    >
+                                                        {size}
+                                                    </option>
+                                                ),
+                                            )}
                                         </select>
                                     </div>
                                 ) : null}
@@ -312,16 +334,25 @@ export default function ShopView({ product }: Props) {
                                         <select
                                             value={selectedShoeSize}
                                             onChange={(event) =>
-                                                setSelectedShoeSize(event.target.value)
+                                                setSelectedShoeSize(
+                                                    event.target.value,
+                                                )
                                             }
                                             className="h-10 w-full rounded-md border bg-background px-3 text-sm"
                                         >
-                                            <option value="">Select number</option>
-                                            {product.available_shoe_sizes.map((size) => (
-                                                <option key={size} value={size}>
-                                                    {size}
-                                                </option>
-                                            ))}
+                                            <option value="">
+                                                Select number
+                                            </option>
+                                            {product.available_shoe_sizes.map(
+                                                (size) => (
+                                                    <option
+                                                        key={size}
+                                                        value={size}
+                                                    >
+                                                        {size}
+                                                    </option>
+                                                ),
+                                            )}
                                         </select>
                                     </div>
                                 ) : null}
@@ -331,16 +362,23 @@ export default function ShopView({ product }: Props) {
                         <div className="mt-4 rounded-lg border bg-background p-3 text-sm">
                             <p className="font-medium">Selected options</p>
                             <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                                {Object.entries(selectedOptions).length === 0 ? (
+                                {Object.entries(selectedOptions).length ===
+                                0 ? (
                                     <span className="text-muted-foreground">
                                         No configurable option selected yet.
                                     </span>
                                 ) : (
-                                    Object.entries(selectedOptions).map(([key, value]) => (
-                                        <span key={key} className="inline-flex rounded-full border px-2 py-0.5">
-                                            {key.replaceAll('_', ' ')}: {value}
-                                        </span>
-                                    ))
+                                    Object.entries(selectedOptions).map(
+                                        ([key, value]) => (
+                                            <span
+                                                key={key}
+                                                className="inline-flex rounded-full border px-2 py-0.5"
+                                            >
+                                                {key.replaceAll('_', ' ')}:{' '}
+                                                {value}
+                                            </span>
+                                        ),
+                                    )
                                 )}
                             </div>
                         </div>
@@ -349,24 +387,36 @@ export default function ShopView({ product }: Props) {
                             <p className="font-medium">Product details</p>
                             <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
                                 <span>Brand</span>
-                                <span className="text-right text-foreground">{product.brand ?? '—'}</span>
+                                <span className="text-right text-foreground">
+                                    {product.brand ?? '—'}
+                                </span>
                                 <span>Model</span>
-                                <span className="text-right text-foreground">{product.model_name ?? '—'}</span>
+                                <span className="text-right text-foreground">
+                                    {product.model_name ?? '—'}
+                                </span>
                                 <span>Type</span>
-                                <span className="text-right text-foreground">{product.product_type ?? '—'}</span>
+                                <span className="text-right text-foreground">
+                                    {product.product_type ?? '—'}
+                                </span>
                                 <span>Clothing sizes</span>
                                 <span className="text-right text-foreground">
-                                    {product.available_clothing_sizes.join(', ') || '—'}
+                                    {product.available_clothing_sizes.join(
+                                        ', ',
+                                    ) || '—'}
                                 </span>
                                 <span>Shoe numbers</span>
                                 <span className="text-right text-foreground">
-                                    {product.available_shoe_sizes.join(', ') || '—'}
+                                    {product.available_shoe_sizes.join(', ') ||
+                                        '—'}
                                 </span>
                             </div>
                         </div>
 
                         <div className="mt-4 space-y-2">
-                            <label htmlFor="product-quantity" className="text-sm font-medium">
+                            <label
+                                htmlFor="product-quantity"
+                                className="text-sm font-medium"
+                            >
                                 Quantity
                             </label>
                             <Input
@@ -375,8 +425,12 @@ export default function ShopView({ product }: Props) {
                                 min={1}
                                 max={Math.max(1, product.stock)}
                                 value={quantityInput}
-                                onChange={(event) => handleQuantityChange(event.target.value)}
-                                onBlur={() => setQuantityInput(String(resolvedQuantity))}
+                                onChange={(event) =>
+                                    handleQuantityChange(event.target.value)
+                                }
+                                onBlur={() =>
+                                    setQuantityInput(String(resolvedQuantity))
+                                }
                                 disabled={product.stock <= 0}
                                 className="max-w-28"
                             />
@@ -392,21 +446,23 @@ export default function ShopView({ product }: Props) {
                                 ? 'Out of stock'
                                 : hasMissingOptions
                                   ? 'Select required options'
-                                : added
-                                  ? 'Added to cart'
-                                  : 'Add to cart'}
+                                  : added
+                                    ? 'Added to cart'
+                                    : 'Add to cart'}
                         </Button>
 
                         <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                            <Button asChild variant="outline" className="w-full">
+                            <Button
+                                asChild
+                                variant="outline"
+                                className="w-full"
+                            >
                                 <Link href={shopIndex()}>
                                     Alisverise devam et
                                 </Link>
                             </Button>
                             <Button asChild className="w-full">
-                                <Link href={cartIndex()}>
-                                    Sepete git
-                                </Link>
+                                <Link href={cartIndex()}>Sepete git</Link>
                             </Button>
                         </div>
                     </aside>

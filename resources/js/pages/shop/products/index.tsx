@@ -71,12 +71,17 @@ function formatMoney(value: string | number) {
     return n.toFixed(2);
 }
 
-export default function Index({ products, categories, filters }: Props) {
-    const [local, setLocal] = useState<Filters>(filters);
+export default function Index(props: Props) {
+    const { filters } = props;
+    const filterKey = [filters.q, filters.category, filters.sort].join(
+        '\u0000',
+    );
 
-    useEffect(() => {
-        setLocal(filters);
-    }, [filters.q, filters.category, filters.sort, filters]);
+    return <ProductIndex key={filterKey} {...props} />;
+}
+
+function ProductIndex({ products, categories, filters }: Props) {
+    const [local, setLocal] = useState<Filters>(filters);
 
     const categoryOptions = useMemo(
         () => categories.slice().sort((a, b) => a.name.localeCompare(b.name)),

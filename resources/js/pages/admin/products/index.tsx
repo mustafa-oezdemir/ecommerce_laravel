@@ -118,13 +118,28 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Products', href: '/admin/products' },
 ];
 
-export default function Index({ products, categories, filters, catalog_options }: Props) {
-    const [local, setLocal] = useState<Filters>(filters);
+export default function Index(props: Props) {
+    const { filters } = props;
+    const filterKey = [
+        filters.q,
+        filters.status,
+        filters.category,
+        filters.stock,
+        filters.brand,
+        filters.model,
+        filters.product_type,
+    ].join('\u0000');
 
-    // Keep local state in sync when navigation happens (e.g. back/forward).
-    useEffect(() => {
-        setLocal(filters);
-    }, [filters]);
+    return <ProductIndex key={filterKey} {...props} />;
+}
+
+function ProductIndex({
+    products,
+    categories,
+    filters,
+    catalog_options,
+}: Props) {
+    const [local, setLocal] = useState<Filters>(filters);
 
     const categoryOptions = useMemo(() => {
         // Simple flat list; later we can render nested (parent/child).
@@ -325,11 +340,16 @@ export default function Index({ products, categories, filters, catalog_options }
                                 className="w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background outline-none focus:ring-2 focus:ring-ring"
                             >
                                 <option value="">All types</option>
-                                {catalog_options.product_types.map((productType) => (
-                                    <option key={productType} value={productType}>
-                                        {productType}
-                                    </option>
-                                ))}
+                                {catalog_options.product_types.map(
+                                    (productType) => (
+                                        <option
+                                            key={productType}
+                                            value={productType}
+                                        >
+                                            {productType}
+                                        </option>
+                                    ),
+                                )}
                             </select>
                         </div>
 
@@ -401,162 +421,174 @@ export default function Index({ products, categories, filters, catalog_options }
                                     </tr>
                                 ) : (
                                     products.data.map((p) => {
-                                        const primaryImageUrl = resolveImageUrl(p.primary_image);
+                                        const primaryImageUrl = resolveImageUrl(
+                                            p.primary_image,
+                                        );
 
                                         return (
-                                        <tr
-                                            key={p.id}
-                                            className="border-b last:border-b-0"
-                                        >
-                                            <td className="px-4 py-3">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="h-10 w-10 shrink-0 overflow-hidden rounded-md border bg-muted/30">
-                                                        {primaryImageUrl ? (
-                                                            <img
-                                                                src={primaryImageUrl}
-                                                                alt={p.name}
-                                                                className="h-full w-full object-cover"
-                                                            />
-                                                        ) : null}
-                                                    </div>
-                                                    <div className="min-w-0">
-                                                        <Link
-                                                            href={`/admin/products/${p.slug}`}
-                                                            className="block truncate font-medium hover:underline"
-                                                        >
-                                                            {p.name}
-                                                        </Link>
-                                                        <div className="truncate text-xs text-muted-foreground">
-                                                            {p.slug}
+                                            <tr
+                                                key={p.id}
+                                                className="border-b last:border-b-0"
+                                            >
+                                                <td className="px-4 py-3">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="h-10 w-10 shrink-0 overflow-hidden rounded-md border bg-muted/30">
+                                                            {primaryImageUrl ? (
+                                                                <img
+                                                                    src={
+                                                                        primaryImageUrl
+                                                                    }
+                                                                    alt={p.name}
+                                                                    className="h-full w-full object-cover"
+                                                                />
+                                                            ) : null}
+                                                        </div>
+                                                        <div className="min-w-0">
+                                                            <Link
+                                                                href={`/admin/products/${p.slug}`}
+                                                                className="block truncate font-medium hover:underline"
+                                                            >
+                                                                {p.name}
+                                                            </Link>
+                                                            <div className="truncate text-xs text-muted-foreground">
+                                                                {p.slug}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </td>
+                                                </td>
 
-                                            <td className="px-4 py-3">
-                                                {p.sku ? (
-                                                    <span className="rounded bg-muted px-2 py-1 text-xs">
-                                                        {p.sku}
-                                                    </span>
-                                                ) : (
-                                                    <span className="text-muted-foreground">
-                                                        —
-                                                    </span>
-                                                )}
-                                            </td>
-
-                                            <td className="px-4 py-3">
-                                                <div className="space-y-1">
-                                                    <div className="font-medium">
-                                                        {p.brand ?? '—'}
-                                                    </div>
-                                                    <div className="text-xs text-muted-foreground">
-                                                        {p.model_name ?? '—'}
-                                                    </div>
-                                                    {p.product_type ? (
-                                                        <span className="inline-flex rounded bg-muted px-2 py-0.5 text-[10px] capitalize">
-                                                            {p.product_type}
+                                                <td className="px-4 py-3">
+                                                    {p.sku ? (
+                                                        <span className="rounded bg-muted px-2 py-1 text-xs">
+                                                            {p.sku}
                                                         </span>
-                                                    ) : null}
-                                                </div>
-                                            </td>
+                                                    ) : (
+                                                        <span className="text-muted-foreground">
+                                                            —
+                                                        </span>
+                                                    )}
+                                                </td>
 
-                                            <td className="px-4 py-3">
-                                                <div className="font-medium">
-                                                    {Number(p.price).toFixed(2)}
-                                                </div>
-                                                {p.compare_at_price ? (
-                                                    <div className="text-xs text-muted-foreground line-through">
-                                                        {Number(
-                                                            p.compare_at_price,
-                                                        ).toFixed(2)}
-                                                    </div>
-                                                ) : null}
-                                            </td>
-
-                                            <td className="px-4 py-3">
-                                                {p.stock > 0 ? (
-                                                    <span className="font-medium">
-                                                        {p.stock}
-                                                    </span>
-                                                ) : (
-                                                    <span className="rounded bg-muted px-2 py-1 text-xs">
-                                                        Out
-                                                    </span>
-                                                )}
-                                            </td>
-
-                                            <td className="px-4 py-3">
-                                                {p.is_active ? (
-                                                    <span className="rounded bg-emerald-500/10 px-2 py-1 text-xs text-emerald-700">
-                                                        Active
-                                                    </span>
-                                                ) : (
-                                                    <span className="rounded bg-muted px-2 py-1 text-xs text-muted-foreground">
-                                                        Inactive
-                                                    </span>
-                                                )}
-                                            </td>
-
-                                            <td className="px-4 py-3">
-                                                {p.categories.length ? (
-                                                    <div className="flex flex-wrap gap-1">
-                                                        {p.categories
-                                                            .slice(0, 3)
-                                                            .map((c) => (
-                                                                <span
-                                                                    key={c.id}
-                                                                    className="rounded bg-muted px-2 py-1 text-xs"
-                                                                    title={
-                                                                        c.slug
-                                                                    }
-                                                                >
-                                                                    {c.name}
-                                                                </span>
-                                                            ))}
-                                                        {p.categories.length >
-                                                        3 ? (
-                                                            <span className="rounded bg-muted px-2 py-1 text-xs">
-                                                                +
-                                                                {p.categories
-                                                                    .length - 3}
+                                                <td className="px-4 py-3">
+                                                    <div className="space-y-1">
+                                                        <div className="font-medium">
+                                                            {p.brand ?? '—'}
+                                                        </div>
+                                                        <div className="text-xs text-muted-foreground">
+                                                            {p.model_name ??
+                                                                '—'}
+                                                        </div>
+                                                        {p.product_type ? (
+                                                            <span className="inline-flex rounded bg-muted px-2 py-0.5 text-[10px] capitalize">
+                                                                {p.product_type}
                                                             </span>
                                                         ) : null}
                                                     </div>
-                                                ) : (
-                                                    <span className="text-muted-foreground">
-                                                        —
+                                                </td>
+
+                                                <td className="px-4 py-3">
+                                                    <div className="font-medium">
+                                                        {Number(
+                                                            p.price,
+                                                        ).toFixed(2)}
+                                                    </div>
+                                                    {p.compare_at_price ? (
+                                                        <div className="text-xs text-muted-foreground line-through">
+                                                            {Number(
+                                                                p.compare_at_price,
+                                                            ).toFixed(2)}
+                                                        </div>
+                                                    ) : null}
+                                                </td>
+
+                                                <td className="px-4 py-3">
+                                                    {p.stock > 0 ? (
+                                                        <span className="font-medium">
+                                                            {p.stock}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="rounded bg-muted px-2 py-1 text-xs">
+                                                            Out
+                                                        </span>
+                                                    )}
+                                                </td>
+
+                                                <td className="px-4 py-3">
+                                                    {p.is_active ? (
+                                                        <span className="rounded bg-emerald-500/10 px-2 py-1 text-xs text-emerald-700">
+                                                            Active
+                                                        </span>
+                                                    ) : (
+                                                        <span className="rounded bg-muted px-2 py-1 text-xs text-muted-foreground">
+                                                            Inactive
+                                                        </span>
+                                                    )}
+                                                </td>
+
+                                                <td className="px-4 py-3">
+                                                    {p.categories.length ? (
+                                                        <div className="flex flex-wrap gap-1">
+                                                            {p.categories
+                                                                .slice(0, 3)
+                                                                .map((c) => (
+                                                                    <span
+                                                                        key={
+                                                                            c.id
+                                                                        }
+                                                                        className="rounded bg-muted px-2 py-1 text-xs"
+                                                                        title={
+                                                                            c.slug
+                                                                        }
+                                                                    >
+                                                                        {c.name}
+                                                                    </span>
+                                                                ))}
+                                                            {p.categories
+                                                                .length > 3 ? (
+                                                                <span className="rounded bg-muted px-2 py-1 text-xs">
+                                                                    +
+                                                                    {p
+                                                                        .categories
+                                                                        .length -
+                                                                        3}
+                                                                </span>
+                                                            ) : null}
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-muted-foreground">
+                                                            —
+                                                        </span>
+                                                    )}
+                                                </td>
+
+                                                <td className="px-4 py-3">
+                                                    <span className="rounded bg-muted px-2 py-1 text-xs">
+                                                        {p.images_count}
                                                     </span>
-                                                )}
-                                            </td>
+                                                </td>
 
-                                            <td className="px-4 py-3">
-                                                <span className="rounded bg-muted px-2 py-1 text-xs">
-                                                    {p.images_count}
-                                                </span>
-                                            </td>
-
-                                            <td className="px-4 py-3">
-                                                <div className="flex items-center justify-end gap-2">
-                                                    <Link
-                                                        href={`/admin/products/${p.slug}/edit`}
-                                                        className="rounded-md border bg-background px-3 py-1.5 text-xs font-medium hover:bg-accent"
-                                                    >
-                                                        Edit
-                                                    </Link>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() =>
-                                                            onDelete(p)
-                                                        }
-                                                        className="rounded-md border border-destructive/30 bg-background px-3 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/10"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    )})
+                                                <td className="px-4 py-3">
+                                                    <div className="flex items-center justify-end gap-2">
+                                                        <Link
+                                                            href={`/admin/products/${p.slug}/edit`}
+                                                            className="rounded-md border bg-background px-3 py-1.5 text-xs font-medium hover:bg-accent"
+                                                        >
+                                                            Edit
+                                                        </Link>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                onDelete(p)
+                                                            }
+                                                            className="rounded-md border border-destructive/30 bg-background px-3 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/10"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
                                 )}
                             </tbody>
                         </table>

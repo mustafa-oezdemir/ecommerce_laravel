@@ -44,7 +44,12 @@ export default function MarketingNav({ canRegister = true }: Props) {
                                 Dashboard
                             </Link>
 
-                            <Link href={logout()} method="post" as="button" className={ghostLink}>
+                            <Link
+                                href={logout()}
+                                method="post"
+                                as="button"
+                                className={ghostLink}
+                            >
                                 Logout
                             </Link>
                         </>

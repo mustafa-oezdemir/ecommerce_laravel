@@ -175,16 +175,10 @@ export default function AdminTrashedProductImages({ images, filters }: Props) {
                                                 {image.product ? (
                                                     <div className="space-y-0.5">
                                                         <div className="font-medium">
-                                                            {
-                                                                image.product
-                                                                    .name
-                                                            }
+                                                            {image.product.name}
                                                         </div>
                                                         <div className="text-xs text-muted-foreground">
-                                                            {
-                                                                image.product
-                                                                    .slug
-                                                            }
+                                                            {image.product.slug}
                                                         </div>
                                                     </div>
                                                 ) : (
@@ -220,8 +214,7 @@ export default function AdminTrashedProductImages({ images, filters }: Props) {
                                                                 ).url,
                                                                 {},
                                                                 {
-                                                                    preserveScroll:
-                                                                        true,
+                                                                    preserveScroll: true,
                                                                 },
                                                             );
                                                         }}
@@ -247,8 +240,7 @@ export default function AdminTrashedProductImages({ images, filters }: Props) {
                                                                     image.id,
                                                                 ).url,
                                                                 {
-                                                                    preserveScroll:
-                                                                        true,
+                                                                    preserveScroll: true,
                                                                 },
                                                             );
                                                         }}

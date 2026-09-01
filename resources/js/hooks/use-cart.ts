@@ -79,18 +79,23 @@ const readStorage = (): CartItem[] => {
                     typeof item.quantity === 'number',
             )
             .map((item) => ({
-                line_id: typeof item.line_id === 'string' && item.line_id.trim() !== ''
-                    ? item.line_id
-                    : `${item.id}:${item.variant_key ?? 'default'}`,
+                line_id:
+                    typeof item.line_id === 'string' &&
+                    item.line_id.trim() !== ''
+                        ? item.line_id
+                        : `${item.id}:${item.variant_key ?? 'default'}`,
                 id: item.id as number,
                 slug: item.slug as string,
                 name: item.name as string,
                 price: item.price as number,
                 quantity: normalizeQuantity(item.quantity as number),
                 variant_key:
-                    typeof item.variant_key === 'string' ? item.variant_key : undefined,
+                    typeof item.variant_key === 'string'
+                        ? item.variant_key
+                        : undefined,
                 selected_options:
-                    item.selected_options && typeof item.selected_options === 'object'
+                    item.selected_options &&
+                    typeof item.selected_options === 'object'
                         ? item.selected_options
                         : null,
                 image_url: item.image_url ?? null,
@@ -143,7 +148,11 @@ const registerStorageListener = (): void => {
 };
 
 export function useCart() {
-    const items = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+    const items = useSyncExternalStore(
+        subscribe,
+        getSnapshot,
+        getServerSnapshot,
+    );
 
     useEffect(() => {
         registerStorageListener();
@@ -152,8 +161,12 @@ export function useCart() {
     const addItem = useCallback((payload: AddCartItemInput): void => {
         const quantityToAdd = normalizeQuantity(payload.quantity ?? 1);
         const existingItems = getSnapshot();
-        const resolvedLineId = payload.line_id || `${payload.id}:${payload.variant_key ?? 'default'}`;
-        const existingIndex = existingItems.findIndex((item) => item.line_id === resolvedLineId);
+        const resolvedLineId =
+            payload.line_id ||
+            `${payload.id}:${payload.variant_key ?? 'default'}`;
+        const existingIndex = existingItems.findIndex(
+            (item) => item.line_id === resolvedLineId,
+        );
 
         if (existingIndex === -1) {
             setItems([
@@ -184,9 +197,10 @@ export function useCart() {
 
             return {
                 ...item,
-                quantity: item.stock !== undefined
-                    ? Math.min(nextQuantity, Math.max(1, item.stock))
-                    : nextQuantity,
+                quantity:
+                    item.stock !== undefined
+                        ? Math.min(nextQuantity, Math.max(1, item.stock))
+                        : nextQuantity,
             };
         });
 
@@ -199,7 +213,9 @@ export function useCart() {
             const existingItems = getSnapshot();
 
             if (normalizedQuantity === 0) {
-                setItems(existingItems.filter((item) => item.line_id !== lineId));
+                setItems(
+                    existingItems.filter((item) => item.line_id !== lineId),
+                );
 
                 return;
             }
@@ -212,7 +228,10 @@ export function useCart() {
 
                     const cappedQuantity =
                         item.stock !== undefined
-                            ? Math.min(normalizedQuantity, Math.max(1, item.stock))
+                            ? Math.min(
+                                  normalizedQuantity,
+                                  Math.max(1, item.stock),
+                              )
                             : normalizedQuantity;
 
                     return {
@@ -238,7 +257,10 @@ export function useCart() {
     }, [items]);
 
     const subtotal = useMemo(() => {
-        return items.reduce((total, item) => total + item.price * item.quantity, 0);
+        return items.reduce(
+            (total, item) => total + item.price * item.quantity,
+            0,
+        );
     }, [items]);
 
     return {

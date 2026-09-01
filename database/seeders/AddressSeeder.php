@@ -11,6 +11,10 @@ class AddressSeeder extends Seeder
     public function run(): void
     {
         User::query()->each(function (User $user): void {
+            if ($user->addresses()->exists()) {
+                return;
+            }
+
             $addresses = Address::factory()
                 ->count(2)
                 ->for($user)
